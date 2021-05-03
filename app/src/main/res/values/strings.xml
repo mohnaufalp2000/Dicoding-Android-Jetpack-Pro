@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Moviepedia</string>
+    <string name="splash_screen">splash screen</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="movie_poster_content">movie poster</string>
+    <string name="release_date">Release date :</string>
+    <string name="blank_text"> </string>
+    <string name="overview">Overview</string>
+    <string name="circle_divider_content">circle divider</string>
+    <string name="rating_star_content">rating star</string>
+</resources>
