@@ -7,25 +7,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.naufal.moviepedia.activity.DetailActivity
 import com.naufal.moviepedia.databinding.ListMainBinding
-import com.naufal.moviepedia.model.Movie
+import com.naufal.moviepedia.model.MovieItems
+import com.naufal.moviepedia.util.Constant.Companion.IMG_URL
 
 class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
 
-    private var list = ArrayList<Movie>()
+    private var list = ArrayList<MovieItems?>()
 
-    fun setMovies(list : List<Movie>){
+    fun setMovies(list : ArrayList<MovieItems?>){
         this.list.clear()
         this.list.addAll(list)
         notifyDataSetChanged()
     }
 
     class ViewHolder(private val binding : ListMainBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie : Movie){
+        fun bind(movie : MovieItems){
             with(binding){
                 txtTitle.text = movie.title
-                txtGenre.text = movie.genre
-                txtRate.text = movie.rating.toString()
-                txtLanguage.text = movie.language
+                txtRate.text = movie.voteAverage.toString()
+                txtLanguage.text = movie.originalLanguage
 
                 itemView.setOnClickListener {
                     val intent = Intent(it.context, DetailActivity::class.java)
@@ -34,7 +34,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
                 }
 
                 Glide.with(itemView.context)
-                    .load(movie.img)
+                    .load("$IMG_URL${movie.posterPath}")
                     .into(imgMovie)
             }
         }
@@ -45,7 +45,7 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(this.list[position])
+        this.list[position]?.let { holder.bind(it) }
     }
 
     override fun getItemCount(): Int = this.list.size

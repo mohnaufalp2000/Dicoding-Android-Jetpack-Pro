@@ -1,19 +1,26 @@
 package com.naufal.moviepedia.activity
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.naufal.moviepedia.R
 import com.naufal.moviepedia.databinding.ActivityDetailBinding
-import com.naufal.moviepedia.model.Movie
-import com.naufal.moviepedia.model.TV
+import com.naufal.moviepedia.model.DetailMovieResponse
+import com.naufal.moviepedia.model.DetailTVResponse
+import com.naufal.moviepedia.util.Constant.Companion.IMG_URL
 import com.naufal.moviepedia.viewmodel.DetailViewModel
+
+import com.naufal.moviepedia.viewmodel.MovieViewModel
+import com.naufal.moviepedia.viewmodel.ViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
 
     private val binding by lazy {ActivityDetailBinding.inflate(layoutInflater)}
+    private val factory = ViewModelFactory.getInstance()
+    private val mDetailViewModel by lazy { ViewModelProvider(this, factory).get(DetailViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -22,23 +29,16 @@ class DetailActivity : AppCompatActivity() {
 
         setupToolbar()
 
-        val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
+        val idMovie = intent.getIntExtra(EXTRA_MOVIE, 0)
+        val idShow = intent.getIntExtra(EXTRA_TV, 0)
 
-        val extras = intent.extras
-        if (extras!=null){
-            val movieId = intent.getStringExtra(EXTRA_MOVIE)
-            val tvId = intent.getStringExtra(EXTRA_TV)
+        mDetailViewModel.getDetailMovie(idMovie).observe(this, { detail ->
+            populateMovie(detail)
+        })
 
-            if (movieId!=null){
-                viewModel.setSelectedMovie(movieId)
-                populateMovie(viewModel.getMovie())
-            }
-
-            if (tvId!=null){
-                viewModel.setSelectedTV(tvId)
-                populateTV(viewModel.getTV())
-            }
-        }
+        mDetailViewModel.getDetailShow(idShow).observe(this, { detail ->
+            populateShow(detail)
+        })
 
     }
 
@@ -51,37 +51,29 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateTV(tv: TV) {
-
+    private fun populateShow(tv: DetailTVResponse?) {
         binding.apply {
-            txtTitle.text = tv.title
-            txtGenre.text = tv.genre
-            txtRating.text = tv.rating.toString()
-            txtOverview.text = tv.overview
-            txtReleased.text = tv.released
-            txtRuntime.text = tv.runtime
-            txtLanguage.text = tv.language
+            txtTitle.text = tv?.name
+            txtRating.text = tv?.voteAverage.toString()
+            txtOverview.text = tv?.overview
+            txtLanguage.text = tv?.originalLanguage
 
             Glide.with(this@DetailActivity)
-                .load(tv.img)
+                .load("$IMG_URL${tv?.posterPath}")
                 .into(imgPoster)
         }
 
     }
 
-    private fun populateMovie(movies: Movie) {
-
+    private fun populateMovie(movies: DetailMovieResponse?) {
         binding.apply {
-            txtTitle.text = movies.title
-            txtGenre.text = movies.genre
-            txtRating.text = movies.rating.toString()
-            txtOverview.text = movies.overview
-            txtReleased.text = movies.released
-            txtRuntime.text = movies.runtime
-            txtLanguage.text = movies.language
+            txtTitle.text = movies?.title
+            txtRating.text = movies?.voteAverage.toString()
+            txtOverview.text = movies?.overview
+            txtLanguage.text = movies?.originalLanguage
 
             Glide.with(this@DetailActivity)
-                .load(movies.img)
+                .load("$IMG_URL${movies?.posterPath}")
                 .into(imgPoster)
         }
 
