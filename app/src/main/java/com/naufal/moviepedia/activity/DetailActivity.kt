@@ -19,8 +19,6 @@ import com.naufal.moviepedia.viewmodel.ViewModelFactory
 class DetailActivity : AppCompatActivity() {
 
     private val binding by lazy {ActivityDetailBinding.inflate(layoutInflater)}
-    private val factory = ViewModelFactory.getInstance()
-    private val mDetailViewModel by lazy { ViewModelProvider(this, factory).get(DetailViewModel::class.java) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -29,16 +27,29 @@ class DetailActivity : AppCompatActivity() {
 
         setupToolbar()
 
-        val idMovie = intent.getIntExtra(EXTRA_MOVIE, 0)
-        val idShow = intent.getIntExtra(EXTRA_TV, 0)
+        val factory = ViewModelFactory.getInstance()
+        val mDetailViewModel by lazy { ViewModelProvider(this, factory).get(DetailViewModel::class.java) }
 
-        mDetailViewModel.getDetailMovie(idMovie).observe(this, { detail ->
-            populateMovie(detail)
-        })
+        val extras = intent.extras
 
-        mDetailViewModel.getDetailShow(idShow).observe(this, { detail ->
-            populateShow(detail)
-        })
+        if (extras!=null){
+            val idMovie = intent.getIntExtra(EXTRA_MOVIE, 0)
+            val idShow = intent.getIntExtra(EXTRA_TV, 0)
+
+            when(intent.getIntExtra(EXTRA_TYPE, 0)){
+                0 -> {
+                    mDetailViewModel.getDetailMovie(idMovie).observe(this, { detail ->
+                        populateMovie(detail)
+                    })
+                }
+                1 -> {
+                    mDetailViewModel.getDetailShow(idShow).observe(this, { detail ->
+                        populateShow(detail)
+                    })
+                }
+            }
+
+        }
 
     }
 
@@ -82,6 +93,9 @@ class DetailActivity : AppCompatActivity() {
     companion object{
         const val EXTRA_TV = "tv"
         const val EXTRA_MOVIE = "movie"
+        const val EXTRA_TYPE = "extraType"
+        const val TYPE_MOVIE = 0
+        const val TYPE_TV = 1
     }
 
 }

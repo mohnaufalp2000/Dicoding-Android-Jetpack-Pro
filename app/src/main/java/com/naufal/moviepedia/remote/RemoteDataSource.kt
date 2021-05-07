@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.naufal.moviepedia.model.*
 import com.naufal.moviepedia.network.ConfigNetwork
+import com.naufal.moviepedia.response.MovieResp
+import com.naufal.moviepedia.response.TVResp
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -11,9 +13,7 @@ import retrofit2.Response
 class RemoteDataSource {
 
     private val movies = MutableLiveData<ArrayList<MovieItems?>?>()
-    private val shows = MutableLiveData<ArrayList<ShowItems?>?>()
-    private val movie = MutableLiveData<DetailMovieResponse?>()
-    private val show = MutableLiveData<DetailTVResponse?>()
+    private val tv = MutableLiveData<ArrayList<TVItems?>?>()
 
     companion object {
         @Volatile
@@ -39,21 +39,21 @@ class RemoteDataSource {
         return movies
     }
 
-    fun getShows() : LiveData<ArrayList<ShowItems?>?> {
-        ConfigNetwork.getApi().getShows().enqueue(object : Callback<ShowResponse> {
-            override fun onResponse(call: Call<ShowResponse>, response: Response<ShowResponse>) {
+    fun getTV() : LiveData<ArrayList<TVItems?>?> {
+        ConfigNetwork.getApi().getShows().enqueue(object : Callback<TVResponse> {
+            override fun onResponse(call: Call<TVResponse>, response: Response<TVResponse>) {
                 val body = response.body()?.results
 
-                shows.postValue(body)
+                tv.postValue(body)
             }
-            override fun onFailure(call: Call<ShowResponse>, t: Throwable) {
+            override fun onFailure(call: Call<TVResponse>, t: Throwable) {
             }
         })
 
-        return shows
+        return tv
     }
 
-    fun getDetailMovie(id: Int) : LiveData<DetailMovieResponse?> {
+    fun getDetailMovie(id: Int, callback: LoadDetailMovieCallback) {
         ConfigNetwork.getApi().getDetailMovie(id).enqueue(object : Callback<DetailMovieResponse>{
             override fun onResponse(
                 call: Call<DetailMovieResponse>,
@@ -61,44 +61,52 @@ class RemoteDataSource {
             ) {
                 val body = response.body()
 
-                val detailMovie = DetailMovieResponse(
+                val detailMovie = MovieResp(
+                    id = body?.id,
                     title = body?.title,
                     posterPath = body?.posterPath,
-                    overview = body?.overview,
-                    voteAverage = body?.voteAverage,
-                    originalLanguage = body?.originalLanguage
+                    rate = body?.voteAverage,
+                    language = body?.originalLanguage,
+                    overview = body?.overview
                 )
-                movie.postValue(detailMovie)
+                callback.onDetailMovieReceived(detailMovie)
             }
 
             override fun onFailure(call: Call<DetailMovieResponse>, t: Throwable) {
             }
         })
-        return movie
     }
 
-    fun getDetailShow(id: Int) : LiveData<DetailTVResponse?> {
-        ConfigNetwork.getApi().getDetailShow(id).enqueue(object : Callback<DetailTVResponse>{
+    fun getDetailTV(id: Int, callback: LoadDetailTVCallback) {
+        ConfigNetwork.getApi().getDetailTV(id).enqueue(object : Callback<DetailTVResponse>{
             override fun onResponse(
                 call: Call<DetailTVResponse>,
                 response: Response<DetailTVResponse>
             ) {
                 val body = response.body()
 
-                val detailShow = DetailTVResponse(
-                    name = body?.name,
+                val detailTV = TVResp(
+                    id = body?.id,
+                    title = body?.name,
                     posterPath = body?.posterPath,
-                    overview = body?.overview,
-                    voteAverage = body?.voteAverage,
-                    originalLanguage = body?.originalLanguage
+                    rate = body?.voteAverage,
+                    language = body?.originalLanguage,
+                    overview = body?.overview
                 )
-                show.postValue(detailShow)
+             callback.onDetailTVReceived(detailTV)
             }
 
             override fun onFailure(call: Call<DetailTVResponse>, t: Throwable) {
             }
         })
-        return show
+    }
+
+    interface LoadDetailMovieCallback {
+        fun onDetailMovieReceived(movieResp : MovieResp)
+    }
+
+    interface LoadDetailTVCallback {
+        fun onDetailTVReceived(tvResp: TVResp)
     }
 
 

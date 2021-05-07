@@ -1,9 +1,6 @@
 package com.naufal.moviepedia.network
 
-import com.naufal.moviepedia.model.DetailMovieResponse
-import com.naufal.moviepedia.model.DetailTVResponse
-import com.naufal.moviepedia.model.MovieResponse
-import com.naufal.moviepedia.model.ShowResponse
+import com.naufal.moviepedia.model.*
 import com.naufal.moviepedia.util.Constant.Companion.API_KEY
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,7 +20,7 @@ interface ApiService {
     fun getShows(
         @Query("api_key") api : String = API_KEY,
         @Query("language") language : String = "en-US"
-    ) : Call<ShowResponse>
+    ) : Call<TVResponse>
 
     @GET("3/movie/{id}")
     fun getDetailMovie(
@@ -33,7 +30,7 @@ interface ApiService {
     ) : Call<DetailMovieResponse>
 
     @GET("3/tv/{id}")
-    fun getDetailShow(
+    fun getDetailTV(
         @Path("id") id : Int,
         @Query("api_key") api : String = API_KEY,
         @Query("language") language : String = "en-US"

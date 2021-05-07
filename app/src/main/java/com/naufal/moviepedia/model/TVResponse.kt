@@ -2,7 +2,7 @@ package com.naufal.moviepedia.model
 
 import com.google.gson.annotations.SerializedName
 
-data class ShowResponse(
+data class TVResponse(
 
 	@field:SerializedName("page")
 	val page: Int? = null,
@@ -11,13 +11,13 @@ data class ShowResponse(
 	val totalPages: Int? = null,
 
 	@field:SerializedName("results")
-	val results: ArrayList<ShowItems?>? = null,
+	val results: ArrayList<TVItems?>? = null,
 
 	@field:SerializedName("total_results")
 	val totalResults: Int? = null
 )
 
-data class ShowItems(
+data class TVItems(
 
 	@field:SerializedName("first_air_date")
 	val firstAirDate: String? = null,
