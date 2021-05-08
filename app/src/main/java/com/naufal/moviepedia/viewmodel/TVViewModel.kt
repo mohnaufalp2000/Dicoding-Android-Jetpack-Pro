@@ -1,11 +1,12 @@
 package com.naufal.moviepedia.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.naufal.moviepedia.data.TVData
-import com.naufal.moviepedia.model.TV
+import com.naufal.moviepedia.model.TVItems
+import com.naufal.moviepedia.repository.Repository
 
-class TVViewModel : ViewModel() {
+class TVViewModel(private val tvRepository: Repository) : ViewModel() {
 
-    fun getTV() : List<TV> = TVData.getDataTV()
+    fun getTV() : LiveData<ArrayList<TVItems?>?> = tvRepository.getAllTV()
 
 }

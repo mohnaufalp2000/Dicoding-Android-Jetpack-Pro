@@ -1,24 +1,25 @@
 package com.naufal.moviepedia.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.naufal.moviepedia.adapter.MovieAdapter
 import com.naufal.moviepedia.adapter.TVAdapter
-import com.naufal.moviepedia.data.MovieData
-import com.naufal.moviepedia.data.TVData
 import com.naufal.moviepedia.databinding.FragmentTVShowsBinding
-import com.naufal.moviepedia.viewmodel.MovieViewModel
 import com.naufal.moviepedia.viewmodel.TVViewModel
+import com.naufal.moviepedia.viewmodel.ViewModelFactory
 
 class TVShowsFragment : Fragment() {
 
     private var binding : FragmentTVShowsBinding? = null
-    private val adapter = TVAdapter()
+    private val adapterShows = TVAdapter()
+    private val factory = ViewModelFactory.getInstance()
+    private val mTVViewModel by lazy {
+        ViewModelProvider(this, factory).get(TVViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,18 +33,19 @@ class TVShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if(activity != null){
-            val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[TVViewModel::class.java]
-            val tvShows = viewModel.getTV()
-            adapter.setTV(tvShows)
+        mTVViewModel.getTV().observe(viewLifecycleOwner, { list ->
+            list?.let { adapterShows.setTV(it) }
+            showRecyclerView()
+        })
 
-            binding?.apply {
-                rvTvShows.setHasFixedSize(true)
-                rvTvShows.layoutManager = LinearLayoutManager(context)
-                rvTvShows.adapter = adapter
-            }
+    }
+
+    private fun showRecyclerView() {
+        binding?.rvTvShows?.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = adapterShows
         }
-
     }
 
     override fun onDestroy() {

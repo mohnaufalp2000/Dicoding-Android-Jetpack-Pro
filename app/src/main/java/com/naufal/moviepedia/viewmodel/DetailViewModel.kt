@@ -1,37 +1,20 @@
 package com.naufal.moviepedia.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.naufal.moviepedia.data.MovieData
-import com.naufal.moviepedia.data.TVData
-import com.naufal.moviepedia.model.Movie
-import com.naufal.moviepedia.model.TV
+import com.naufal.moviepedia.model.DetailMovieResponse
+import com.naufal.moviepedia.model.DetailTVResponse
+import com.naufal.moviepedia.network.ConfigNetwork
+import com.naufal.moviepedia.repository.Repository
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class DetailViewModel : ViewModel() {
+class DetailViewModel(private val detailRepository: Repository) : ViewModel() {
 
-    private lateinit var movieId : String
-    private lateinit var tvId : String
+    fun getDetailMovie(id: Int) : LiveData<DetailMovieResponse?> = detailRepository.getOneMovie(id)
 
-    fun setSelectedMovie(movieId : String){
-        this.movieId = movieId
-    }
-
-    fun setSelectedTV(tvId : String){
-        this.tvId = tvId
-    }
-
-    fun getMovie() : Movie {
-        return MovieData.getDataMovies().first{ it.id == movieId}
-    }
-
-    fun getTV() : TV {
-        lateinit var tv : TV
-
-        for (tvEntity in TVData.getDataTV()){
-            if (tvEntity.id == this.tvId){
-                tv = tvEntity
-            }
-        }
-        return tv
-    }
+    fun getDetailShow(id: Int) : LiveData<DetailTVResponse?> = detailRepository.getOneTV(id)
 
 }

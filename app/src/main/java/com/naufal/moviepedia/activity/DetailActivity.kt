@@ -1,15 +1,20 @@
 package com.naufal.moviepedia.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.graphics.component1
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.naufal.moviepedia.R
 import com.naufal.moviepedia.databinding.ActivityDetailBinding
-import com.naufal.moviepedia.model.Movie
-import com.naufal.moviepedia.model.TV
+import com.naufal.moviepedia.model.DetailMovieResponse
+import com.naufal.moviepedia.model.DetailTVResponse
+import com.naufal.moviepedia.util.Constant.Companion.IMG_URL
 import com.naufal.moviepedia.viewmodel.DetailViewModel
+import com.naufal.moviepedia.viewmodel.ViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
 
@@ -22,22 +27,28 @@ class DetailActivity : AppCompatActivity() {
 
         setupToolbar()
 
-        val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
+        val factory = ViewModelFactory.getInstance()
+        val mDetailViewModel by lazy { ViewModelProvider(this, factory).get(DetailViewModel::class.java) }
 
         val extras = intent.extras
+
         if (extras!=null){
-            val movieId = intent.getStringExtra(EXTRA_MOVIE)
-            val tvId = intent.getStringExtra(EXTRA_TV)
+            val idMovie = intent.getIntExtra(EXTRA_MOVIE, 0)
+            val idShow = intent.getIntExtra(EXTRA_TV, 0)
 
-            if (movieId!=null){
-                viewModel.setSelectedMovie(movieId)
-                populateMovie(viewModel.getMovie())
+            when(intent.getIntExtra(EXTRA_TYPE, 0)){
+                0 -> {
+                    mDetailViewModel.getDetailMovie(idMovie).observe(this, { detail ->
+                        populateMovie(detail)
+                    })
+                }
+                1 -> {
+                    mDetailViewModel.getDetailShow(idShow).observe(this, { detail ->
+                        populateShow(detail)
+                    })
+                }
             }
 
-            if (tvId!=null){
-                viewModel.setSelectedTV(tvId)
-                populateTV(viewModel.getTV())
-            }
         }
 
     }
@@ -51,37 +62,41 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateTV(tv: TV) {
-
+    private fun populateShow(tv: DetailTVResponse?) {
         binding.apply {
-            txtTitle.text = tv.title
-            txtGenre.text = tv.genre
-            txtRating.text = tv.rating.toString()
-            txtOverview.text = tv.overview
-            txtReleased.text = tv.released
-            txtRuntime.text = tv.runtime
-            txtLanguage.text = tv.language
+            txtTitle.text = tv?.name
+            txtRating.text = tv?.voteAverage.toString()
+            txtOverview.text = tv?.overview
+            txtLanguage.text = tv?.originalLanguage
+            txtGenre.text = tv?.genres?.component1()?.component1()
+            if (tv?.episodeRunTime?.size != 0){
+                if (tv != null) {
+                    txtRuntime.text = tv.episodeRunTime?.get(0).toString()
+                }
+            } else {
+                txtRuntime.text = 0.toString()
+            }
+            txtReleased.text = tv?.firstAirDate?.subSequence(0,4)
 
             Glide.with(this@DetailActivity)
-                .load(tv.img)
+                .load("$IMG_URL${tv?.posterPath}")
                 .into(imgPoster)
         }
 
     }
 
-    private fun populateMovie(movies: Movie) {
-
+    private fun populateMovie(movies: DetailMovieResponse?) {
         binding.apply {
-            txtTitle.text = movies.title
-            txtGenre.text = movies.genre
-            txtRating.text = movies.rating.toString()
-            txtOverview.text = movies.overview
-            txtReleased.text = movies.released
-            txtRuntime.text = movies.runtime
-            txtLanguage.text = movies.language
+            txtTitle.text = movies?.title
+            txtRating.text = movies?.voteAverage.toString()
+            txtOverview.text = movies?.overview
+            txtLanguage.text = movies?.originalLanguage
+            txtRuntime.text = movies?.runtime.toString()
+            txtReleased.text = movies?.releaseDate?.subSequence(0,4)
+            txtGenre.text = movies?.genres?.component1()?.component1()
 
             Glide.with(this@DetailActivity)
-                .load(movies.img)
+                .load("$IMG_URL${movies?.posterPath}")
                 .into(imgPoster)
         }
 
@@ -90,6 +105,9 @@ class DetailActivity : AppCompatActivity() {
     companion object{
         const val EXTRA_TV = "tv"
         const val EXTRA_MOVIE = "movie"
+        const val EXTRA_TYPE = "extraType"
+        const val TYPE_MOVIE = 0
+        const val TYPE_TV = 1
     }
 
 }
