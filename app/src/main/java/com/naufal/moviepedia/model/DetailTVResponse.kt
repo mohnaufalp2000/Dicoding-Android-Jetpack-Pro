@@ -20,13 +20,13 @@ data class DetailTVResponse(
 	val backdropPath: String? = null,
 
 	@field:SerializedName("genres")
-	val genres: List<GenresItem?>? = null,
+	val genres: List<GenresTVItem?>? = null,
 
 	@field:SerializedName("popularity")
 	val popularity: Double? = null,
 
 	@field:SerializedName("production_countries")
-	val productionCountries: List<ProductionCountriesItem?>? = null,
+	val productionCountries: List<ProductionTVCountriesItem?>? = null,
 
 	@field:SerializedName("id")
 	val id: Int? = null,
@@ -80,7 +80,7 @@ data class DetailTVResponse(
 	val tagline: String? = null,
 
 	@field:SerializedName("episode_run_time")
-	val episodeRunTime: List<Int?>? = null,
+	val episodeRunTime: ArrayList<Int?>? = null,
 
 	@field:SerializedName("next_episode_to_air")
 	val nextEpisodeToAir: NextEpisodeToAir? = null,
@@ -164,7 +164,7 @@ data class NetworksItem(
 	val originCountry: String? = null
 )
 
-data class ProductionCountriesItem(
+data class ProductionTVCountriesItem(
 
 	@field:SerializedName("iso_3166_1")
 	val iso31661: String? = null,
@@ -173,7 +173,7 @@ data class ProductionCountriesItem(
 	val name: String? = null
 )
 
-data class GenresItem(
+data class GenresTVItem(
 
 	@field:SerializedName("name")
 	val name: String? = null,

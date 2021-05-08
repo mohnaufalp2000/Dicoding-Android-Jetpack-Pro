@@ -9,6 +9,5 @@ data class MovieResp(
     val title: String? = "",
     val posterPath: String? = "",
     val rate: Double? = 0.0,
-    val language: String? = "",
-    val overview: String? = ""
+    val language: String? = ""
 ) : Parcelable

@@ -190,7 +190,18 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_light"
                     android:textColor="@color/white"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:layout_marginEnd="2dp"/>
+
+                <TextView
+                    android:id="@+id/txt_runtime_hours"
+                    android:text="@string/runtime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_light"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginEnd="2dp"/>
 
             </LinearLayout>
 

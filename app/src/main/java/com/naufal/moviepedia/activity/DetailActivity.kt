@@ -1,9 +1,11 @@
 package com.naufal.moviepedia.activity
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.graphics.component1
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.naufal.moviepedia.R
@@ -12,8 +14,6 @@ import com.naufal.moviepedia.model.DetailMovieResponse
 import com.naufal.moviepedia.model.DetailTVResponse
 import com.naufal.moviepedia.util.Constant.Companion.IMG_URL
 import com.naufal.moviepedia.viewmodel.DetailViewModel
-
-import com.naufal.moviepedia.viewmodel.MovieViewModel
 import com.naufal.moviepedia.viewmodel.ViewModelFactory
 
 class DetailActivity : AppCompatActivity() {
@@ -68,6 +68,15 @@ class DetailActivity : AppCompatActivity() {
             txtRating.text = tv?.voteAverage.toString()
             txtOverview.text = tv?.overview
             txtLanguage.text = tv?.originalLanguage
+            txtGenre.text = tv?.genres?.component1()?.component1()
+            if (tv?.episodeRunTime?.size != 0){
+                if (tv != null) {
+                    txtRuntime.text = tv.episodeRunTime?.get(0).toString()
+                }
+            } else {
+                txtRuntime.text = 0.toString()
+            }
+            txtReleased.text = tv?.firstAirDate?.subSequence(0,4)
 
             Glide.with(this@DetailActivity)
                 .load("$IMG_URL${tv?.posterPath}")
@@ -82,6 +91,9 @@ class DetailActivity : AppCompatActivity() {
             txtRating.text = movies?.voteAverage.toString()
             txtOverview.text = movies?.overview
             txtLanguage.text = movies?.originalLanguage
+            txtRuntime.text = movies?.runtime.toString()
+            txtReleased.text = movies?.releaseDate?.subSequence(0,4)
+            txtGenre.text = movies?.genres?.component1()?.component1()
 
             Glide.with(this@DetailActivity)
                 .load("$IMG_URL${movies?.posterPath}")

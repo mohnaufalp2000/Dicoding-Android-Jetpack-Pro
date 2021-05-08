@@ -27,13 +27,13 @@ data class DetailMovieResponse(
 	val revenue: Int? = null,
 
 	@field:SerializedName("genres")
-	val genres: @RawValue List<TVGenresItem?>? = null,
+	val genres: @RawValue ArrayList<MovieGenresItem?>? = null,
 
 	@field:SerializedName("popularity")
 	val popularity: Double? = null,
 
 	@field:SerializedName("production_countries")
-	val productionCountries: @RawValue List<TVProductionCountriesItem?>? = null,
+	val productionCountries: @RawValue List<ProductionCountriesItem?>? = null,
 
 	@field:SerializedName("id")
 	val id: Int? = null,
@@ -57,10 +57,10 @@ data class DetailMovieResponse(
 	val posterPath: String? = null,
 
 	@field:SerializedName("spoken_languages")
-	val spokenLanguages: @RawValue List<TVLanguagesItem?>? = null,
+	val spokenLanguages: @RawValue List<LanguagesItem?>? = null,
 
 	@field:SerializedName("production_companies")
-	val productionCompanies: @RawValue List<ProductionTVCompanies?>? = null,
+	val productionCompanies: @RawValue List<ProductionCompanies?>? = null,
 
 	@field:SerializedName("release_date")
 	val releaseDate: String? = null,
@@ -84,7 +84,7 @@ data class DetailMovieResponse(
 	val status: String? = null
 ) : Parcelable
 
-data class ProductionTVCompanies(
+data class ProductionCompanies(
 
 	@field:SerializedName("logo_path")
 	val logoPath: String? = null,
@@ -99,7 +99,7 @@ data class ProductionTVCompanies(
 	val originCountry: String? = null
 )
 
-data class TVLanguagesItem(
+data class LanguagesItem(
 
 	@field:SerializedName("name")
 	val name: String? = null,
@@ -111,7 +111,7 @@ data class TVLanguagesItem(
 	val englishName: String? = null
 )
 
-data class TVProductionCountriesItem(
+data class ProductionCountriesItem(
 
 	@field:SerializedName("iso_3166_1")
 	val iso31661: String? = null,
@@ -120,7 +120,7 @@ data class TVProductionCountriesItem(
 	val name: String? = null
 )
 
-data class TVGenresItem(
+data class MovieGenresItem(
 
 	@field:SerializedName("name")
 	val name: String? = null,

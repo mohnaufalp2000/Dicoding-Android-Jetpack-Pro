@@ -16,10 +16,6 @@ class MoviesFragment : Fragment() {
 
     private var binding : FragmentMoviesBinding? = null
     private val adapterMovies = MovieAdapter()
-    private val factory = ViewModelFactory.getInstance()
-    private val mMovieViewModel by lazy {
-        ViewModelProvider(this, factory).get(MovieViewModel::class.java)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,6 +29,11 @@ class MoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val factory = ViewModelFactory.getInstance()
+        val mMovieViewModel by lazy {
+            ViewModelProvider(this, factory).get(MovieViewModel::class.java)
+        }
 
         mMovieViewModel.getMovies().observe(viewLifecycleOwner, { list ->
             list?.let { adapterMovies.setMovies(it) }
