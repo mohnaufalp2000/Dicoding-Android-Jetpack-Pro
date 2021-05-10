@@ -36,14 +36,17 @@ class DetailActivity : AppCompatActivity() {
             val idMovie = intent.getIntExtra(EXTRA_MOVIE, 0)
             val idShow = intent.getIntExtra(EXTRA_TV, 0)
 
+            mDetailViewModel.setSelectedMovie(idMovie)
+            mDetailViewModel.setSelectedTV(idShow)
+
             when(intent.getIntExtra(EXTRA_TYPE, 0)){
                 0 -> {
-                    mDetailViewModel.getDetailMovie(idMovie).observe(this, { detail ->
+                    mDetailViewModel.getDetailMovie().observe(this, { detail ->
                         populateMovie(detail)
                     })
                 }
                 1 -> {
-                    mDetailViewModel.getDetailShow(idShow).observe(this, { detail ->
+                    mDetailViewModel.getDetailShow().observe(this, { detail ->
                         populateShow(detail)
                     })
                 }

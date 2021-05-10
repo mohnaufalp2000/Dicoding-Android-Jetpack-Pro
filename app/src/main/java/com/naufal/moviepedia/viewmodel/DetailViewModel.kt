@@ -13,8 +13,19 @@ import retrofit2.Response
 
 class DetailViewModel(private val detailRepository: Repository) : ViewModel() {
 
-    fun getDetailMovie(id: Int) : LiveData<DetailMovieResponse?> = detailRepository.getOneMovie(id)
+    private var movieId : Int = 0
+    private var tvId : Int = 0
 
-    fun getDetailShow(id: Int) : LiveData<DetailTVResponse?> = detailRepository.getOneTV(id)
+    fun setSelectedMovie(movieId: Int){
+        this.movieId = movieId
+    }
+
+    fun setSelectedTV(tvId: Int){
+        this.tvId = tvId
+    }
+
+    fun getDetailMovie() : LiveData<DetailMovieResponse?> = detailRepository.getOneMovie(movieId)
+
+    fun getDetailShow(): LiveData<DetailTVResponse?> = detailRepository.getOneTV(tvId)
 
 }

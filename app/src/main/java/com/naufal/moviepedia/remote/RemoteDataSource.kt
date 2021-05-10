@@ -4,13 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import com.naufal.moviepedia.model.*
 import com.naufal.moviepedia.network.ConfigNetwork
 import com.naufal.moviepedia.response.*
+import com.naufal.moviepedia.util.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class RemoteDataSource {
 
-    private val tv = MutableLiveData<ArrayList<TVItems?>?>()
+    private val idling = EspressoIdlingResource.idlingResource
 
     companion object {
         @Volatile
@@ -23,6 +24,7 @@ class RemoteDataSource {
     }
 
     fun getMovies(callback: LoadMoviesCallback) {
+        idling.increment()
         ConfigNetwork.getApi().getMovies().enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val body = response.body()?.results
@@ -46,9 +48,11 @@ class RemoteDataSource {
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
             }
         })
+        idling.decrement()
     }
 
     fun getTV(callback: LoadTVCallback) {
+        idling.increment()
         ConfigNetwork.getApi().getShows().enqueue(object : Callback<TVResponse> {
             override fun onResponse(call: Call<TVResponse>, response: Response<TVResponse>) {
                 val body = response.body()?.results
@@ -74,10 +78,12 @@ class RemoteDataSource {
             override fun onFailure(call: Call<TVResponse>, t: Throwable) {
             }
         })
+        idling.decrement()
 
     }
 
     fun getDetailMovie(id: Int, callback: LoadDetailMovieCallback) {
+        idling.increment()
         ConfigNetwork.getApi().getDetailMovie(id).enqueue(object : Callback<DetailMovieResponse>{
             override fun onResponse(
                 call: Call<DetailMovieResponse>,
@@ -115,9 +121,11 @@ class RemoteDataSource {
             override fun onFailure(call: Call<DetailMovieResponse>, t: Throwable) {
             }
         })
+        idling.decrement()
     }
 
     fun getDetailTV(id: Int, callback: LoadDetailTVCallback) {
+        idling.increment()
         ConfigNetwork.getApi().getDetailTV(id).enqueue(object : Callback<DetailTVResponse>{
             override fun onResponse(
                 call: Call<DetailTVResponse>,
@@ -154,6 +162,7 @@ class RemoteDataSource {
             override fun onFailure(call: Call<DetailTVResponse>, t: Throwable) {
             }
         })
+        idling.decrement()
     }
 
     interface LoadMoviesCallback{
