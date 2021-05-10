@@ -1,6 +1,5 @@
 package com.naufal.moviepedia.di
 
-import android.content.Context
 import com.naufal.moviepedia.remote.RemoteDataSource
 import com.naufal.moviepedia.repository.Repository
 

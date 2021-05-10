@@ -53,17 +53,19 @@ class DetailViewModelTest {
     fun getDetailMovie() {
         val movies = MutableLiveData<DetailMovieResponse>()
 
-        val detailMovie = DetailMovieResponse(
-            id = movieId,
-            title = dummyMovie?.title
-        )
+        val detailMovie = DetailMovieResponse()
 
         movies.value = detailMovie
 
         `when`(movieId?.let { detailRepository.getOneMovie(it) }).thenReturn(movies)
         val movieEntity = viewModel.getDetailMovie().value
         movieId?.let { verify(detailRepository).getOneMovie(it) }
+
         assertNotNull(movieEntity)
+        assertEquals(detailMovie.id, movieEntity?.id)
+        assertEquals(detailMovie.title, movieEntity?.title)
+        assertEquals(detailMovie.voteAverage, movieEntity?.voteAverage)
+        assertEquals(detailMovie.originalLanguage, movieEntity?.originalLanguage)
 
         viewModel.getDetailMovie().observeForever(movieObserver)
         verify(movieObserver).onChanged(detailMovie)
@@ -74,17 +76,19 @@ class DetailViewModelTest {
     fun getDetailShow() {
         val tv = MutableLiveData<DetailTVResponse>()
 
-        val detailTV = DetailTVResponse(
-            id = tvId,
-            name = dummyTV?.name
-        )
+        val detailTV = DetailTVResponse()
 
         tv.value = detailTV
 
         `when`(tvId?.let { detailRepository.getOneTV(it) }).thenReturn(tv)
         val tvEntity = viewModel.getDetailShow().value
         tvId?.let { verify(detailRepository).getOneTV(it) }
+
         assertNotNull(tvEntity)
+        assertEquals(detailTV.id, tvEntity?.id)
+        assertEquals(detailTV.name, tvEntity?.name)
+        assertEquals(detailTV.voteAverage, tvEntity?.voteAverage)
+        assertEquals(detailTV.originalLanguage, tvEntity?.originalLanguage)
 
         viewModel.getDetailShow().observeForever(tvObserver)
         verify(tvObserver).onChanged(detailTV)

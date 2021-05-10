@@ -53,20 +53,12 @@ class FakeRepository(private val remoteDataSource: RemoteDataSource) : AppSource
         })
         return tvResults
     }
-    override fun getOneMovie(id: Int): LiveData<DetailMovieResponse?> {
+    override fun getOneMovie(id: Int?): LiveData<DetailMovieResponse?> {
         val detailMovieResults = MutableLiveData<DetailMovieResponse>()
 
         remoteDataSource.getDetailMovie(id, object : RemoteDataSource.LoadDetailMovieCallback{
             override fun onDetailMovieReceived(detailMovieResp: DetailMovieResp) {
                 val genresItem = ArrayList<MovieGenresItem?>()
-
-                for (response in detailMovieResp.genres!!){
-                    val genre = MovieGenresItem(
-                        id = response.id,
-                        name = response.name
-                    )
-                    genresItem.add(genre)
-                }
 
                 val detailMovieResponse = DetailMovieResponse(
                     id = detailMovieResp.id,
@@ -85,20 +77,12 @@ class FakeRepository(private val remoteDataSource: RemoteDataSource) : AppSource
         })
         return detailMovieResults
     }
-    override fun getOneTV(id: Int): LiveData<DetailTVResponse?> {
+    override fun getOneTV(id: Int?): LiveData<DetailTVResponse?> {
         val detailTVResults = MutableLiveData<DetailTVResponse>()
 
         remoteDataSource.getDetailTV(id, object : RemoteDataSource.LoadDetailTVCallback{
             override fun onDetailTVReceived(detailTvResp: DetailTVResp) {
                 val genresItem = ArrayList<GenresTVItem?>()
-
-                for (response in detailTvResp.genres!!){
-                    val genre = GenresTVItem(
-                        id = response.id,
-                        name = response.name
-                    )
-                    genresItem.add(genre)
-                }
 
                 val detailTVResponse = DetailTVResponse(
                     id = detailTvResp.id,

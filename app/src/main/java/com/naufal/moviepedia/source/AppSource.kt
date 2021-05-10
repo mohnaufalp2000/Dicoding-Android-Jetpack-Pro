@@ -10,7 +10,7 @@ interface AppSource {
 
     fun getAllMovies() : LiveData<ArrayList<MovieItems?>?>
     fun getAllTV() : LiveData<ArrayList<TVItems?>?>
-    fun getOneMovie(id: Int) : LiveData<DetailMovieResponse?>
-    fun getOneTV(id: Int) : LiveData<DetailTVResponse?>
+    fun getOneMovie(id: Int?) : LiveData<DetailMovieResponse?>
+    fun getOneTV(id: Int?) : LiveData<DetailTVResponse?>
 
 }

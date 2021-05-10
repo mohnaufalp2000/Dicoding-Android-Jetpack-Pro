@@ -1,6 +1,5 @@
 package com.naufal.moviepedia.remote
 
-import androidx.lifecycle.MutableLiveData
 import com.naufal.moviepedia.model.*
 import com.naufal.moviepedia.network.ConfigNetwork
 import com.naufal.moviepedia.response.*
@@ -11,7 +10,7 @@ import retrofit2.Response
 
 class RemoteDataSource {
 
-    private val idling = EspressoIdlingResource.idlingResource
+    private val idling = EspressoIdlingResource
 
     companion object {
         @Volatile
@@ -82,7 +81,7 @@ class RemoteDataSource {
 
     }
 
-    fun getDetailMovie(id: Int, callback: LoadDetailMovieCallback) {
+    fun getDetailMovie(id: Int?, callback: LoadDetailMovieCallback) {
         idling.increment()
         ConfigNetwork.getApi().getDetailMovie(id).enqueue(object : Callback<DetailMovieResponse>{
             override fun onResponse(
@@ -124,7 +123,7 @@ class RemoteDataSource {
         idling.decrement()
     }
 
-    fun getDetailTV(id: Int, callback: LoadDetailTVCallback) {
+    fun getDetailTV(id: Int?, callback: LoadDetailTVCallback) {
         idling.increment()
         ConfigNetwork.getApi().getDetailTV(id).enqueue(object : Callback<DetailTVResponse>{
             override fun onResponse(

@@ -34,31 +34,26 @@ class MainActivityTest{
 
     @Test
     fun loadMovies(){
+        onView(withText("MOVIES")).perform(click())
         onView(withId(R.id.rv_movies)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_movies)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(dummyMovie.size))
         onView(withId(R.id.rv_movies)).perform(swipeUp())
     }
 
-//    @Test
-//    fun loadDetailMovies(){
-//        onView(withId(R.id.rv_movies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-//        onView(withId(R.id.detail_activity)).perform(swipeUp())
-//        onView(withId(R.id.txt_title)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_title)).check(matches(withText(dummyMovie[0]?.title)))
-//        onView(withId(R.id.txt_released)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_released)).check(matches(withText(dummyMovie[0].released)))
-//        onView(withId(R.id.txt_genre)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_genre)).check(matches(withText(dummyMovie[0].genre)))
-//        onView(withId(R.id.txt_runtime)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_runtime)).check(matches(withText(dummyMovie[0].runtime)))
-//        onView(withId(R.id.txt_language)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_language)).check(matches(withText(dummyMovie[0].language)))
-//        onView(withId(R.id.txt_rating)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_rating)).check(matches(withText(dummyMovie[0].rating.toString())))
-//        onView(withId(R.id.txt_overview)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_overview)).check(matches(withText(dummyMovie[0]?.overview)))
-//        onView(withId(R.id.img_poster)).check(matches(isDisplayed()))
-//    }
+    @Test
+    fun loadDetailMovies(){
+    onView(withText("MOVIES")).perform(click())
+    onView(withId(R.id.rv_movies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+    onView(withId(R.id.detail_activity)).perform(swipeUp())
+    onView(withId(R.id.txt_title)).check(matches(isDisplayed()))
+    onView(withId(R.id.txt_released)).check(matches(isDisplayed()))
+    onView(withId(R.id.txt_genre)).check(matches(isDisplayed()))
+    onView(withId(R.id.txt_runtime)).check(matches(isDisplayed()))
+    onView(withId(R.id.txt_language)).check(matches(isDisplayed()))
+    onView(withId(R.id.txt_rating)).check(matches(isDisplayed()))
+    onView(withId(R.id.txt_overview)).check(matches(isDisplayed()))
+    onView(withId(R.id.img_poster)).check(matches(isDisplayed()))
+    }
 
     @Test
     fun loadTV(){
@@ -68,26 +63,19 @@ class MainActivityTest{
         onView(withId(R.id.rv_tv_shows)).perform(swipeUp())
     }
 
-//    @Test
-//    fun loadDetailTV(){
-//        onView(withText("TV SHOWS")).perform(click())
-//        onView(withId(R.id.rv_tv_shows)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
-//        onView(withId(R.id.detail_activity)).perform(swipeUp())
-//        onView(withId(R.id.txt_title)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_title)).check(matches(withText(dummyTV[0]?.name)))
-//        onView(withId(R.id.txt_released)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_released)).check(matches(withText(dummyTV[0].released)))
-//        onView(withId(R.id.txt_genre)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_genre)).check(matches(withText(dummyTV[0].genre)))
-//        onView(withId(R.id.txt_runtime)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_runtime)).check(matches(withText(dummyTV[0].runtime)))
-//        onView(withId(R.id.txt_language)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_language)).check(matches(withText(dummyTV[0].language)))
-//        onView(withId(R.id.txt_rating)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_rating)).check(matches(withText(dummyTV[0].rating.toString())))
-//        onView(withId(R.id.txt_overview)).check(matches(isDisplayed()))
-//        onView(withId(R.id.txt_overview)).check(matches(withText(dummyTV[0]?.overview)))
-//        onView(withId(R.id.img_poster)).check(matches(isDisplayed()))
-//    }
+    @Test
+    fun loadDetailTV(){
+        onView(withText("TV SHOWS")).perform(click())
+        onView(withId(R.id.rv_tv_shows)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.detail_activity)).perform(swipeUp())
+        onView(withId(R.id.txt_title)).check(matches(isDisplayed()))
+        onView(withId(R.id.txt_released)).check(matches(isDisplayed()))
+        onView(withId(R.id.txt_genre)).check(matches(isDisplayed()))
+        onView(withId(R.id.txt_runtime)).check(matches(isDisplayed()))
+        onView(withId(R.id.txt_language)).check(matches(isDisplayed()))
+        onView(withId(R.id.txt_rating)).check(matches(isDisplayed()))
+        onView(withId(R.id.txt_overview)).check(matches(isDisplayed()))
+        onView(withId(R.id.img_poster)).check(matches(isDisplayed()))
+    }
 
 }

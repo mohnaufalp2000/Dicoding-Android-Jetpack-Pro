@@ -49,7 +49,7 @@ class TVViewModelTest {
         val tvEntities = viewModel.getTV().value
         verify(tvRepository).getAllTV()
         assertNotNull(tvEntities)
-        assertEquals(1, tvEntities?.size)
+        assertEquals(10, tvEntities?.size)
 
         viewModel.getTV().observeForever(observer)
         Mockito.verify(observer).onChanged(dummyTV)

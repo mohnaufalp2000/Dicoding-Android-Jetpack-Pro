@@ -63,7 +63,7 @@ class Repository(private val remoteDataSource: RemoteDataSource) : AppSource {
         })
         return tvResults
     }
-    override fun getOneMovie(id: Int): LiveData<DetailMovieResponse?> {
+    override fun getOneMovie(id: Int?): LiveData<DetailMovieResponse?> {
         val detailMovieResults = MutableLiveData<DetailMovieResponse>()
 
         remoteDataSource.getDetailMovie(id, object : RemoteDataSource.LoadDetailMovieCallback{
@@ -95,7 +95,7 @@ class Repository(private val remoteDataSource: RemoteDataSource) : AppSource {
         })
         return detailMovieResults
     }
-    override fun getOneTV(id: Int): LiveData<DetailTVResponse?> {
+    override fun getOneTV(id: Int?): LiveData<DetailTVResponse?> {
         val detailTVResults = MutableLiveData<DetailTVResponse>()
 
         remoteDataSource.getDetailTV(id, object : RemoteDataSource.LoadDetailTVCallback{
