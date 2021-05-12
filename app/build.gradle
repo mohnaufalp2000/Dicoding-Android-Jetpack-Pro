@@ -9,6 +9,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
+        buildConfigField("String", "API_TOKEN", '"717340c8ef51908688c37cb00efec990"')
         applicationId "com.naufal.moviepedia"
         minSdkVersion 21
         targetSdkVersion 30

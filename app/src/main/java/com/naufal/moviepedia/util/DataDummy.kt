@@ -13,7 +13,7 @@ import com.naufal.moviepedia.response.TVResp
 
 object DataDummy {
 
-    fun getDataMovies() : ArrayList<MovieItems?> {
+    fun getDataMovies(): ArrayList<MovieItems?> {
 
         val movies = ArrayList<MovieItems?>()
 
@@ -76,7 +76,7 @@ object DataDummy {
                 MovieItems(
                     id = 7,
                     title = "Avengers: Infinity War",
-                    voteAverage= 8.4,
+                    voteAverage = 8.4,
                     overview = "The Avengers must stop Thanos, an intergalactic warlord, from getting his hands on all the infinity stones. However, Thanos is prepared to go to any lengths to carry out his insane plan.",
                     originalLanguage = "en"
                 )
@@ -113,7 +113,7 @@ object DataDummy {
         return movies
     }
 
-    fun getRemoteDataMovies() : ArrayList<MovieResp> {
+    fun getRemoteDataMovies(): ArrayList<MovieResp> {
 
         val movies = ArrayList<MovieResp>()
 
@@ -121,19 +121,92 @@ object DataDummy {
             add(
                 MovieResp(
                     id = 1,
-                    title = "Aquaman"
+                    title = "Alita: Battle Angel",
+                    rate = 7.3,
+                    language = "en"
+                )
+            )
+            add(
+                MovieResp(
+                    id = 2,
+                    title = "Aquaman",
+                    rate = 6.9,
+                    language = "en"
+                )
+            )
+            add(
+                MovieResp(
+                    id = 3,
+                    title = "Bohemian Rhapsody",
+                    rate = 8.0,
+                    language = "en"
+                )
+            )
+            add(
+                MovieResp(
+                    id = 4,
+                    title = "Creed II",
+                    rate = 7.1,
+                    language = "en"
+                )
+            )
+            add(
+                MovieResp(
+                    id = 5,
+                    title = "Glass",
+                    rate = 6.7,
+                    language = "en"
+                )
+            )
+            add(
+                MovieResp(
+                    id = 6,
+                    title = "How to Train Your Dragon: The Hidden World",
+                    rate = 7.5,
+                    language = "en"
+                )
+            )
+            add(
+                MovieResp(
+                    id = 7,
+                    title = "Avengers: Infinity War",
+                    rate = 8.4,
+                    language = "en"
+                )
+            )
+            add(
+                MovieResp(
+                    id = 8,
+                    title = "Overlord",
+                    rate = 6.6,
+                    language = "en"
+                )
+            )
+            add(
+                MovieResp(
+                    id = 9,
+                    title = "Ralph Breaks the Internet",
+                    rate = 7.0,
+                    language = "en"
+                )
+            )
+            add(
+                MovieResp(
+                    id = 10,
+                    title = "Robin Hood",
+                    rate = 5.3,
+                    language = "en"
                 )
             )
         }
-
         return movies
     }
 
-    fun getRemoteDetailDataMovies(id: Int) : DetailMovieResp{
+    fun getRemoteDetailDataMovies(id: Int): DetailMovieResp {
         return DetailMovieResp(id)
     }
 
-    fun getDataTV() : ArrayList<TVItems?> {
+    fun getDataTV(): ArrayList<TVItems?> {
 
         val tv = ArrayList<TVItems?>()
 
@@ -235,7 +308,7 @@ object DataDummy {
         return tv
     }
 
-    fun getRemoteDataTV() : ArrayList<TVResp> {
+    fun getRemoteDataTV(): ArrayList<TVResp> {
 
         val tv = ArrayList<TVResp>()
 
@@ -243,16 +316,93 @@ object DataDummy {
             add(
                 TVResp(
                     id = 1,
-                    title = "The Flash"
+                    title = "Arrow",
+                    rate = 7.7,
+                    language = "en"
                 )
             )
+            add(
+                TVResp(
+                    id = 2,
+                    title = "Dragon Ball",
+                    rate = 8.5,
+                    language = "en"
+                )
+            )
+            add(
+                TVResp(
+                    id = 3,
+                    title = "Fairy Tail",
+                    rate = 8.0,
+                    language = "en"
+                )
+            )
+            add(
+                TVResp(
+                    id = 3,
+                    title = "Family Guy",
+                    rate = 8.1,
+                    language = "en"
+                )
+            )
+            add(
+                TVResp(
+                    id = 5,
+                    title = "Flash",
+                    rate = 7.7,
+                    language = "en"
+                )
+            )
+            add(
+                TVResp(
+                    id = 6,
+                    title = "Game Of Thrones",
+                    rate = 9.3,
+                    language = "en"
+                )
+            )
+            add(
+                TVResp(
+                    id = 7,
+                    title = "Gotham",
+                    rate = 7.4,
+                    language = "en"
+                )
+            )
+            add(
+                TVResp(
+                    id = 8,
+                    title = "Hanna",
+                    rate = 7.5,
+                    language = "en"
+                )
+            )
+            add(
+                TVResp(
+                    id = 9,
+                    title = "Iron Fist",
+                    rate = 6.5,
+                    language = "en"
+                )
+            )
+
+            add(
+                TVResp(
+                    id = 10,
+                    title = "Naruto Shippuden",
+                    rate = 8.6,
+                    language = "en"
+                )
+            )
+
         }
 
         return tv
     }
 
-    fun getRemoteDetailDataTV(id: Int) : DetailTVResp {
+    fun getRemoteDetailDataTV(id: Int): DetailTVResp {
         return DetailTVResp(id)
     }
 
 }
+

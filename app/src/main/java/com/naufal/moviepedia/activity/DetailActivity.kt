@@ -23,13 +23,12 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        setupToolbar()
-
         val factory = ViewModelFactory.getInstance()
         val mDetailViewModel by lazy { ViewModelProvider(this, factory).get(DetailViewModel::class.java) }
 
-        val extras = intent.extras
+        setupToolbar()
 
+        val extras = intent.extras
         if (extras!=null){
             val idMovie = intent.getIntExtra(EXTRA_MOVIE, 0)
             val idShow = intent.getIntExtra(EXTRA_TV, 0)
@@ -39,20 +38,19 @@ class DetailActivity : AppCompatActivity() {
 
             when(intent.getIntExtra(EXTRA_TYPE, 0)){
                 0 -> {
-                    mDetailViewModel.getDetailMovie().observe(this, { detail ->
+                    mDetailViewModel.getDetailMovie(this).observe(this, { detail ->
                         populateMovie(detail)
                     })
                 }
                 1 -> {
-                    mDetailViewModel.getDetailShow().observe(this, { detail ->
+                    mDetailViewModel.getDetailShow(this).observe(this, { detail ->
                         populateTV(detail)
                     })
                 }
             }
-
         }
-
     }
+
 
     private fun setupToolbar() {
         setSupportActionBar(binding.tbDetail)
@@ -86,6 +84,7 @@ class DetailActivity : AppCompatActivity() {
         }
 
     }
+
 
     private fun populateMovie(movies: DetailMovieResponse?) {
         loadingIndicator(true)

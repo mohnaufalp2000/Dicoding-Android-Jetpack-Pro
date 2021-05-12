@@ -5,7 +5,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.naufal.moviepedia.model.DetailMovieResponse
 import com.naufal.moviepedia.model.DetailTVResponse
-import com.naufal.moviepedia.model.MovieItems
 import com.naufal.moviepedia.repository.Repository
 import com.naufal.moviepedia.util.DataDummy
 import com.nhaarman.mockitokotlin2.verify
@@ -18,12 +17,11 @@ import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
-import java.util.*
 
 @RunWith(MockitoJUnitRunner::class)
 class DetailViewModelTest {
 
-    private lateinit var viewModel : DetailViewModel
+    private lateinit var viewModel: DetailViewModel
     private val dummyMovie = DataDummy.getDataMovies()[0]
     private val dummyTV = DataDummy.getDataTV()[0]
     private val movieId = dummyMovie?.id
@@ -33,7 +31,7 @@ class DetailViewModelTest {
     var instantTaskExecutorRule = InstantTaskExecutorRule()
 
     @Mock
-    private lateinit var detailRepository : Repository
+    private lateinit var detailRepository: Repository
 
     @Mock
     private lateinit var movieObserver: Observer<DetailMovieResponse?>
@@ -43,7 +41,7 @@ class DetailViewModelTest {
 
 
     @Before
-    fun setUp(){
+    fun setUp() {
         viewModel = DetailViewModel(detailRepository)
         movieId?.let { viewModel.setSelectedMovie(it) }
         tvId?.let { viewModel.setSelectedTV(it) }

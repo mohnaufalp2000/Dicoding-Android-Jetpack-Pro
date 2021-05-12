@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
-@Parcelize
 data class DetailMovieResponse(
 
 	@field:SerializedName("original_language")
@@ -82,7 +81,7 @@ data class DetailMovieResponse(
 
 	@field:SerializedName("status")
 	val status: String? = null
-) : Parcelable
+)
 
 data class ProductionCompanies(
 

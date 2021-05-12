@@ -1,15 +1,11 @@
 package com.naufal.moviepedia.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.naufal.moviepedia.model.DetailMovieResponse
 import com.naufal.moviepedia.model.DetailTVResponse
-import com.naufal.moviepedia.network.ConfigNetwork
 import com.naufal.moviepedia.repository.Repository
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class DetailViewModel(private val detailRepository: Repository) : ViewModel() {
 
@@ -24,8 +20,8 @@ class DetailViewModel(private val detailRepository: Repository) : ViewModel() {
         this.tvId = tvId
     }
 
-    fun getDetailMovie() : LiveData<DetailMovieResponse?> = detailRepository.getOneMovie(movieId)
+    fun getDetailMovie(context: Context?) : LiveData<DetailMovieResponse?> = detailRepository.getOneMovie(movieId, context)
 
-    fun getDetailShow(): LiveData<DetailTVResponse?> = detailRepository.getOneTV(tvId)
+    fun getDetailShow(context: Context?): LiveData<DetailTVResponse?> = detailRepository.getOneTV(tvId, context)
 
 }

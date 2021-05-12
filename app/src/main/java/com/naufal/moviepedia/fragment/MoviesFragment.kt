@@ -35,7 +35,7 @@ class MoviesFragment : Fragment() {
             ViewModelProvider(this, factory).get(MovieViewModel::class.java)
         }
 
-        mMovieViewModel.getMovies().observe(viewLifecycleOwner, { list ->
+        mMovieViewModel.getMovies(context).observe(viewLifecycleOwner, { list ->
             list?.let { adapterMovies.setMovies(it) }
             showRecyclerView()
         })

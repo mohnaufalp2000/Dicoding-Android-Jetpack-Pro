@@ -3,7 +3,6 @@ package com.naufal.moviepedia.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.naufal.moviepedia.model.MovieItems
 import com.naufal.moviepedia.model.TVItems
 import com.naufal.moviepedia.repository.Repository
 import com.naufal.moviepedia.util.DataDummy

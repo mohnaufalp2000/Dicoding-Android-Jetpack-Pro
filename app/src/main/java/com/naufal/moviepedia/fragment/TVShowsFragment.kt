@@ -33,7 +33,7 @@ class TVShowsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        mTVViewModel.getTV().observe(viewLifecycleOwner, { list ->
+        mTVViewModel.getTV(context).observe(viewLifecycleOwner, { list ->
             list?.let { adapterShows.setTV(it) }
             showRecyclerView()
         })
