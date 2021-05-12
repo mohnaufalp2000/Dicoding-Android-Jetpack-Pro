@@ -1,11 +1,9 @@
 package com.naufal.moviepedia.activity
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.graphics.component1
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.naufal.moviepedia.R
@@ -25,33 +23,34 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        setupToolbar()
-
         val factory = ViewModelFactory.getInstance()
         val mDetailViewModel by lazy { ViewModelProvider(this, factory).get(DetailViewModel::class.java) }
 
-        val extras = intent.extras
+        setupToolbar()
 
+        val extras = intent.extras
         if (extras!=null){
             val idMovie = intent.getIntExtra(EXTRA_MOVIE, 0)
             val idShow = intent.getIntExtra(EXTRA_TV, 0)
 
+            mDetailViewModel.setSelectedMovie(idMovie)
+            mDetailViewModel.setSelectedTV(idShow)
+
             when(intent.getIntExtra(EXTRA_TYPE, 0)){
                 0 -> {
-                    mDetailViewModel.getDetailMovie(idMovie).observe(this, { detail ->
+                    mDetailViewModel.getDetailMovie(this).observe(this, { detail ->
                         populateMovie(detail)
                     })
                 }
                 1 -> {
-                    mDetailViewModel.getDetailShow(idShow).observe(this, { detail ->
-                        populateShow(detail)
+                    mDetailViewModel.getDetailShow(this).observe(this, { detail ->
+                        populateTV(detail)
                     })
                 }
             }
-
         }
-
     }
+
 
     private fun setupToolbar() {
         setSupportActionBar(binding.tbDetail)
@@ -62,7 +61,8 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateShow(tv: DetailTVResponse?) {
+    private fun populateTV(tv: DetailTVResponse?) {
+        loadingIndicator(true)
         binding.apply {
             txtTitle.text = tv?.name
             txtRating.text = tv?.voteAverage.toString()
@@ -85,7 +85,9 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
+
     private fun populateMovie(movies: DetailMovieResponse?) {
+        loadingIndicator(true)
         binding.apply {
             txtTitle.text = movies?.title
             txtRating.text = movies?.voteAverage.toString()
@@ -94,12 +96,29 @@ class DetailActivity : AppCompatActivity() {
             txtRuntime.text = movies?.runtime.toString()
             txtReleased.text = movies?.releaseDate?.subSequence(0,4)
             txtGenre.text = movies?.genres?.component1()?.component1()
+            txtRuntimeHours.visibility = View.VISIBLE
 
             Glide.with(this@DetailActivity)
                 .load("$IMG_URL${movies?.posterPath}")
                 .into(imgPoster)
         }
 
+    }
+
+    private fun loadingIndicator(indicator: Boolean) {
+        if (indicator){
+            binding.apply {
+                pbDetail.visibility = View.GONE
+                appbarDetail.visibility = View.VISIBLE
+                detailScroll.visibility = View.VISIBLE
+            }
+        } else {
+            binding.apply {
+                pbDetail.visibility = View.VISIBLE
+                appbarDetail.visibility = View.GONE
+                detailScroll.visibility = View.GONE
+            }
+        }
     }
 
     companion object{

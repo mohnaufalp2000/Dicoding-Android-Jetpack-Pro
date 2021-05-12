@@ -24,14 +24,14 @@ interface ApiService {
 
     @GET("3/movie/{id}")
     fun getDetailMovie(
-        @Path("id") id : Int,
+        @Path("id") id : Int?,
         @Query("api_key") api : String = API_KEY,
         @Query("language") language : String = "en-US"
     ) : Call<DetailMovieResponse>
 
     @GET("3/tv/{id}")
     fun getDetailTV(
-        @Path("id") id : Int,
+        @Path("id") id : Int?,
         @Query("api_key") api : String = API_KEY,
         @Query("language") language : String = "en-US"
     ) : Call<DetailTVResponse>

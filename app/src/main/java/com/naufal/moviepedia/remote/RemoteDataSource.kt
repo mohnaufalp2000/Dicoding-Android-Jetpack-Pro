@@ -1,16 +1,21 @@
 package com.naufal.moviepedia.remote
 
-import androidx.lifecycle.MutableLiveData
+import android.content.Context
+import android.widget.Toast
+import com.naufal.moviepedia.activity.MainActivity
+import com.naufal.moviepedia.fragment.MoviesFragment
+import com.naufal.moviepedia.fragment.TVShowsFragment
 import com.naufal.moviepedia.model.*
 import com.naufal.moviepedia.network.ConfigNetwork
 import com.naufal.moviepedia.response.*
+import com.naufal.moviepedia.util.EspressoIdlingResource
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class RemoteDataSource {
 
-    private val tv = MutableLiveData<ArrayList<TVItems?>?>()
+    private val idling = EspressoIdlingResource
 
     companion object {
         @Volatile
@@ -22,7 +27,8 @@ class RemoteDataSource {
             }
     }
 
-    fun getMovies(callback: LoadMoviesCallback) {
+    fun getMovies(callback: LoadMoviesCallback, context: Context?) {
+        idling.increment()
         ConfigNetwork.getApi().getMovies().enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val body = response.body()?.results
@@ -44,11 +50,14 @@ class RemoteDataSource {
 
             }
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
             }
         })
+        idling.decrement()
     }
 
-    fun getTV(callback: LoadTVCallback) {
+    fun getTV(callback: LoadTVCallback, context: Context?) {
+        idling.increment()
         ConfigNetwork.getApi().getShows().enqueue(object : Callback<TVResponse> {
             override fun onResponse(call: Call<TVResponse>, response: Response<TVResponse>) {
                 val body = response.body()?.results
@@ -69,15 +78,17 @@ class RemoteDataSource {
 
                 callback.onTVReceived(tvResults)
 
-
             }
             override fun onFailure(call: Call<TVResponse>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
             }
         })
+        idling.decrement()
 
     }
 
-    fun getDetailMovie(id: Int, callback: LoadDetailMovieCallback) {
+    fun getDetailMovie(id: Int?, callback: LoadDetailMovieCallback, context: Context?) {
+        idling.increment()
         ConfigNetwork.getApi().getDetailMovie(id).enqueue(object : Callback<DetailMovieResponse>{
             override fun onResponse(
                 call: Call<DetailMovieResponse>,
@@ -113,11 +124,14 @@ class RemoteDataSource {
             }
 
             override fun onFailure(call: Call<DetailMovieResponse>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
             }
         })
+        idling.decrement()
     }
 
-    fun getDetailTV(id: Int, callback: LoadDetailTVCallback) {
+    fun getDetailTV(id: Int?, callback: LoadDetailTVCallback, context: Context?) {
+        idling.increment()
         ConfigNetwork.getApi().getDetailTV(id).enqueue(object : Callback<DetailTVResponse>{
             override fun onResponse(
                 call: Call<DetailTVResponse>,
@@ -152,8 +166,10 @@ class RemoteDataSource {
             }
 
             override fun onFailure(call: Call<DetailTVResponse>, t: Throwable) {
+                Toast.makeText(context, t.message, Toast.LENGTH_LONG).show()
             }
         })
+        idling.decrement()
     }
 
     interface LoadMoviesCallback{

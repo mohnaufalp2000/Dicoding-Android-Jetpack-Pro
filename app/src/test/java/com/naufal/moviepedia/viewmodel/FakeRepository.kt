@@ -1,6 +1,5 @@
-package com.naufal.moviepedia.repository
+package com.naufal.moviepedia.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.naufal.moviepedia.model.*
@@ -11,19 +10,9 @@ import com.naufal.moviepedia.response.MovieResp
 import com.naufal.moviepedia.response.TVResp
 import com.naufal.moviepedia.source.AppSource
 
-class Repository(private val remoteDataSource: RemoteDataSource) : AppSource {
+class FakeRepository(private val remoteDataSource: RemoteDataSource) : AppSource {
 
-    companion object{
-        @Volatile
-        private var instance: Repository? = null
-
-        fun getInstance(remoteData: RemoteDataSource): Repository =
-            instance ?: synchronized(this) {
-                instance ?: Repository(remoteData).apply { instance = this }
-            }
-    }
-
-    override fun getAllMovies(context: Context?): LiveData<ArrayList<MovieItems?>?> {
+    override fun getAllMovies(): LiveData<ArrayList<MovieItems?>?> {
         val movieResults = MutableLiveData<ArrayList<MovieItems?>?>()
         remoteDataSource.getMovies(object : RemoteDataSource.LoadMoviesCallback{
             override fun onMoviesReceived(movieResp: ArrayList<MovieResp>) {
@@ -38,13 +27,13 @@ class Repository(private val remoteDataSource: RemoteDataSource) : AppSource {
                     )
                     movieList.add(movieResponse)
                 }
-            movieResults.postValue(movieList)
+                movieResults.postValue(movieList)
             }
-        }, context)
+        })
         return movieResults
     }
 
-    override fun getAllTV(context: Context?): LiveData<ArrayList<TVItems?>?> {
+    override fun getAllTV(): LiveData<ArrayList<TVItems?>?> {
         val tvResults = MutableLiveData<ArrayList<TVItems?>?>()
         remoteDataSource.getTV(object : RemoteDataSource.LoadTVCallback{
             override fun onTVReceived(tvResp: ArrayList<TVResp>) {
@@ -61,23 +50,15 @@ class Repository(private val remoteDataSource: RemoteDataSource) : AppSource {
                 }
                 tvResults.postValue(tvList)
             }
-        }, context)
+        })
         return tvResults
     }
-    override fun getOneMovie(id: Int?, context: Context?): LiveData<DetailMovieResponse?> {
+    override fun getOneMovie(id: Int?): LiveData<DetailMovieResponse?> {
         val detailMovieResults = MutableLiveData<DetailMovieResponse>()
 
         remoteDataSource.getDetailMovie(id, object : RemoteDataSource.LoadDetailMovieCallback{
             override fun onDetailMovieReceived(detailMovieResp: DetailMovieResp) {
                 val genresItem = ArrayList<MovieGenresItem?>()
-
-                for (response in detailMovieResp.genres!!){
-                    val genre = MovieGenresItem(
-                        id = response.id,
-                        name = response.name
-                    )
-                    genresItem.add(genre)
-                }
 
                 val detailMovieResponse = DetailMovieResponse(
                     id = detailMovieResp.id,
@@ -93,23 +74,15 @@ class Repository(private val remoteDataSource: RemoteDataSource) : AppSource {
 
                 detailMovieResults.postValue(detailMovieResponse)
             }
-        }, context)
+        })
         return detailMovieResults
     }
-    override fun getOneTV(id: Int?, context: Context?): LiveData<DetailTVResponse?> {
+    override fun getOneTV(id: Int?): LiveData<DetailTVResponse?> {
         val detailTVResults = MutableLiveData<DetailTVResponse>()
 
         remoteDataSource.getDetailTV(id, object : RemoteDataSource.LoadDetailTVCallback{
             override fun onDetailTVReceived(detailTvResp: DetailTVResp) {
                 val genresItem = ArrayList<GenresTVItem?>()
-
-                for (response in detailTvResp.genres!!){
-                    val genre = GenresTVItem(
-                        id = response.id,
-                        name = response.name
-                    )
-                    genresItem.add(genre)
-                }
 
                 val detailTVResponse = DetailTVResponse(
                     id = detailTvResp.id,
@@ -127,9 +100,8 @@ class Repository(private val remoteDataSource: RemoteDataSource) : AppSource {
             }
 
 
-        }, context)
+        })
         return detailTVResults
     }
-
 
 }
