@@ -12,4 +12,5 @@
     <string name="circle_divider_content">circle divider</string>
     <string name="rating_star_content">rating star</string>
     <string name="runtime">h</string>
+    <string name="favorite">Favorite</string>
 </resources>

@@ -2,6 +2,8 @@ package com.naufal.moviepedia.remote
 
 import android.content.Context
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.naufal.moviepedia.activity.MainActivity
 import com.naufal.moviepedia.fragment.MoviesFragment
 import com.naufal.moviepedia.fragment.TVShowsFragment
@@ -27,8 +29,9 @@ class RemoteDataSource {
             }
     }
 
-    fun getMovies(callback: LoadMoviesCallback, context: Context?) {
+    fun getMovies(context: Context?): LiveData<ApiResponse<List<MovieResp>>> {
         idling.increment()
+        val result = MutableLiveData<ApiResponse<List<MovieResp>>>()
         ConfigNetwork.getApi().getMovies().enqueue(object : Callback<MovieResponse> {
             override fun onResponse(call: Call<MovieResponse>, response: Response<MovieResponse>) {
                 val body = response.body()?.results
@@ -46,7 +49,7 @@ class RemoteDataSource {
                     }
                 }
 
-                callback.onMoviesReceived(movieResults)
+                result.value = ApiResponse.success(movieResults)
 
             }
             override fun onFailure(call: Call<MovieResponse>, t: Throwable) {
@@ -54,6 +57,7 @@ class RemoteDataSource {
             }
         })
         idling.decrement()
+        return result
     }
 
     fun getTV(callback: LoadTVCallback, context: Context?) {
@@ -87,26 +91,27 @@ class RemoteDataSource {
 
     }
 
-    fun getDetailMovie(id: Int?, callback: LoadDetailMovieCallback, context: Context?) {
+    fun getDetailMovie(id: Int?, context: Context?): LiveData<ApiResponse<DetailMovieResp>> {
         idling.increment()
+        val result = MutableLiveData<ApiResponse<DetailMovieResp>>()
         ConfigNetwork.getApi().getDetailMovie(id).enqueue(object : Callback<DetailMovieResponse>{
             override fun onResponse(
                 call: Call<DetailMovieResponse>,
                 response: Response<DetailMovieResponse>
             ) {
                 val body = response.body()
-                val genreItems = response.body()?.genres
+//                val genreItems = response.body()?.genres
                 val genreResults = ArrayList<MovieGenreResp>()
 
-                if (genreItems != null) {
-                    for (item in genreItems){
-                        val genreResponse = MovieGenreResp(
-                            id = item?.id,
-                            name = item?.name
-                        )
-                        genreResults.add(genreResponse)
-                    }
-                }
+//                if (genreItems != null) {
+//                    for (item in genreItems){
+//                        val genreResponse = MovieGenreResp(
+//                            id = item?.id,
+//                            name = item?.name
+//                        )
+//                        genreResults.add(genreResponse)
+//                    }
+//                }
 
                 val detailMovie = DetailMovieResp(
                     id = body?.id,
@@ -117,10 +122,10 @@ class RemoteDataSource {
                     overview = body?.overview,
                     runtime = body?.runtime,
                     release = body?.releaseDate,
-                    genres = genreResults
+//                    genres = genreResults
                 )
 
-                callback.onDetailMovieReceived(detailMovie)
+                result.value = ApiResponse.success(detailMovie)
             }
 
             override fun onFailure(call: Call<DetailMovieResponse>, t: Throwable) {
@@ -128,6 +133,7 @@ class RemoteDataSource {
             }
         })
         idling.decrement()
+        return result
     }
 
     fun getDetailTV(id: Int?, callback: LoadDetailTVCallback, context: Context?) {
@@ -173,7 +179,7 @@ class RemoteDataSource {
     }
 
     interface LoadMoviesCallback{
-        fun onMoviesReceived(movieResp : ArrayList<MovieResp>)
+        fun onMoviesReceived(movieResp : List<MovieResp>)
     }
 
     interface LoadTVCallback{

@@ -1,75 +1,67 @@
 package com.naufal.moviepedia.model
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
 data class MovieResponse(
 
 	@field:SerializedName("dates")
-	val dates: Dates? = null,
+	var dates: Dates? = null,
 
 	@field:SerializedName("page")
-	val page: Int? = null,
+	var page: Int? = null,
 
 	@field:SerializedName("total_pages")
-	val totalPages: Int? = null,
+	var totalPages: Int? = null,
 
 	@field:SerializedName("results")
-	val results: ArrayList<MovieItems?>? = null,
+	var results: ArrayList<MovieItems?>? = null,
 
 	@field:SerializedName("total_results")
-	val totalResults: Int? = null
+	var totalResults: Int? = null
 )
 
 data class MovieItems(
 
-	@field:SerializedName("overview")
-	val overview: String? = null,
-
 	@field:SerializedName("original_language")
-	val originalLanguage: String? = null,
-
-	@field:SerializedName("original_title")
-	val originalTitle: String? = null,
-
-	@field:SerializedName("video")
-	val video: Boolean? = null,
+	@ColumnInfo(name = "originalLanguage")
+	var originalLanguage: String? = null,
 
 	@field:SerializedName("title")
-	val title: String? = null,
-
-	@field:SerializedName("genre_ids")
-	val genreIds: List<Int?>? = null,
+	@ColumnInfo(name = "title")
+	var title: String? = null,
 
 	@field:SerializedName("poster_path")
-	val posterPath: String? = null,
-
-	@field:SerializedName("backdrop_path")
-	val backdropPath: String? = null,
+	@ColumnInfo(name = "posterPath")
+	var posterPath: String? = null,
 
 	@field:SerializedName("release_date")
-	val releaseDate: String? = null,
-
-	@field:SerializedName("popularity")
-	val popularity: Double? = null,
+	@ColumnInfo(name = "releaseDate")
+	var releaseDate: String? = null,
 
 	@field:SerializedName("vote_average")
-	val voteAverage: Double? = null,
+	@ColumnInfo(name = "voteAverage")
+	var voteAverage: Double? = null,
 
 	@field:SerializedName("id")
-	val id: Int? = null,
+	@PrimaryKey
+	@ColumnInfo(name = "id")
+	var id: Int? = null,
 
-	@field:SerializedName("adult")
-	val adult: Boolean? = null,
+	@ColumnInfo(name = "date")
+	var date: String? = null,
 
-	@field:SerializedName("vote_count")
-	val voteCount: Int? = null
+	@ColumnInfo(name = "isFavorite")
+	var isFavorite: Boolean? = false
 )
 
 data class Dates(
 
 	@field:SerializedName("maximum")
-	val maximum: String? = null,
+	var maximum: String? = null,
 
 	@field:SerializedName("minimum")
-	val minimum: String? = null
+	var minimum: String? = null
 )

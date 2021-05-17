@@ -44,13 +44,13 @@ class TVViewModelTest {
         val tv = MutableLiveData<ArrayList<TVItems?>?>()
         tv.value = dummyTV
 
-        `when`(tvRepository.getAllTV()).thenReturn(tv)
-        val tvEntities = viewModel.getTV().value
-        verify(tvRepository).getAllTV()
+        `when`(tvRepository.getAllTV(null)).thenReturn(tv)
+        val tvEntities = viewModel.getTV(null).value
+        verify(tvRepository).getAllTV(null)
         assertNotNull(tvEntities)
         assertEquals(10, tvEntities?.size)
 
-        viewModel.getTV().observeForever(observer)
+        viewModel.getTV(null).observeForever(observer)
         Mockito.verify(observer).onChanged(dummyTV)
     }
 }

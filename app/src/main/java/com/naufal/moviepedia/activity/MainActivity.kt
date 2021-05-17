@@ -1,5 +1,6 @@
 package com.naufal.moviepedia.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.annotation.StringRes
@@ -34,5 +35,15 @@ class MainActivity : AppCompatActivity() {
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
 
+        binding.tbMain.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId){
+                R.id.favorite_list -> {
+                    val intent = Intent(this, FavoriteActivity::class.java)
+                    startActivity(intent)
+                    true
+                }
+                else ->false
+            }
+        }
     }
 }

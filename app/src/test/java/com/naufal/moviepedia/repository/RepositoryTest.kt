@@ -37,9 +37,9 @@ class RepositoryTest {
             (it.arguments[0] as RemoteDataSource.LoadMoviesCallback)
                 .onMoviesReceived(movieResponses)
             null
-        }.`when`(remote).getMovies(any())
-        val movieItems = LiveDataTestUtil.getValue(fakeRepository.getAllMovies())
-        verify(remote).getMovies(any())
+        }.`when`(remote).getMovies(any(), null)
+        val movieItems = LiveDataTestUtil.getValue(fakeRepository.getAllMovies(null))
+        verify(remote).getMovies(any(), null)
         assertNotNull(movieItems)
         assertEquals(movieResponses.size.toLong(), movieItems?.size?.toLong())
     }
@@ -50,9 +50,9 @@ class RepositoryTest {
             (it.arguments[0] as RemoteDataSource.LoadTVCallback)
                 .onTVReceived(tvResponses)
             null
-        }.`when`(remote).getTV(any())
-        val tvItems = LiveDataTestUtil.getValue(fakeRepository.getAllTV())
-        verify(remote).getTV(any())
+        }.`when`(remote).getTV(any(), null)
+        val tvItems = LiveDataTestUtil.getValue(fakeRepository.getAllTV(null))
+        verify(remote).getTV(any(), null)
         assertNotNull(tvItems)
         assertEquals(tvResponses.size.toLong(), tvItems?.size?.toLong())
     }
@@ -64,12 +64,12 @@ class RepositoryTest {
                 (it.arguments[1] as RemoteDataSource.LoadDetailMovieCallback)
                     .onDetailMovieReceived(detailMovieResponse)
             }
-        }.`when`(remote).getDetailMovie(eq(movieId), any())
+        }.`when`(remote).getDetailMovie(eq(movieId), any(), null)
 
-        val movieEntity = LiveDataTestUtil.getValue(fakeRepository.getOneMovie(movieId))
+        val movieEntity = LiveDataTestUtil.getValue(fakeRepository.getOneMovie(movieId, null))
 
         verify(remote)
-            .getDetailMovie(eq(movieId), any())
+            .getDetailMovie(eq(movieId), any(), null)
 
         assertNotNull(movieEntity)
     }
@@ -81,12 +81,12 @@ class RepositoryTest {
                 (it.arguments[1] as RemoteDataSource.LoadDetailTVCallback)
                     .onDetailTVReceived(detailTVResponse)
             }
-        }.`when`(remote).getDetailTV(eq(tvId), any())
+        }.`when`(remote).getDetailTV(eq(tvId), any(), null)
 
-        val tvEntity = LiveDataTestUtil.getValue(fakeRepository.getOneTV(tvId))
+        val tvEntity = LiveDataTestUtil.getValue(fakeRepository.getOneTV(tvId, null))
 
         verify(remote)
-            .getDetailTV(eq(tvId), any())
+            .getDetailTV(eq(tvId), any(), null)
 
         assertNotNull(tvEntity)
     }

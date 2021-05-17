@@ -5,10 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/darkBlue"
-    tools:context=".activity.MainActivity">
+    tools:context=".activity.FavoriteActivity">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/ab_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:liftOnScroll="true"
@@ -16,12 +15,10 @@
         android:background="@color/darkBlue">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/tb_main"
+            android:id="@+id/tb_favorite"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            app:navigationIcon="@drawable/appbar_icon"
-            app:title="Moviepedia"
-            app:menu="@menu/main_menu"
+            app:title="Favorite"
             app:layout_scrollFlags="scroll|snap|enterAlways"
             app:titleTextColor="@color/white"/>
 
@@ -32,7 +29,7 @@
             app:layout_collapseMode="pin">
 
             <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tab_main"
+                android:id="@+id/tab_favorite"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/darkBlue"
@@ -44,7 +41,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/vp_main"
+        android:id="@+id/vp_favorite"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"/>

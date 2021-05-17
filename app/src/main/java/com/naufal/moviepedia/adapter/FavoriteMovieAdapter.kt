@@ -9,15 +9,15 @@ import com.naufal.moviepedia.activity.DetailActivity
 import com.naufal.moviepedia.databinding.ListMainBinding
 import com.naufal.moviepedia.model.MovieEntity
 import com.naufal.moviepedia.model.MovieItems
-import com.naufal.moviepedia.util.Constant.Companion.IMG_URL
+import com.naufal.moviepedia.util.Constant
 
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+class FavoriteMovieAdapter : RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolder>() {
 
     private var list = ArrayList<MovieEntity?>()
 
-    fun setMovies(list: List<MovieEntity>){
+    fun setMovies(list : List<MovieEntity?>?){
         this.list.clear()
-        this.list.addAll(list)
+        list?.let { this.list.addAll(it) }
         notifyDataSetChanged()
     }
 
@@ -38,13 +38,13 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
                 }
 
                 Glide.with(itemView.context)
-                    .load("$IMG_URL${movie.posterPath}")
+                    .load("${Constant.IMG_URL}${movie.posterPath}")
                     .into(imgMovie)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder (
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ListMainBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
@@ -52,5 +52,5 @@ class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
         this.list[position]?.let { holder.bind(it) }
     }
 
-    override fun getItemCount(): Int = this.list.size
+    override fun getItemCount() : Int = this.list.size
 }

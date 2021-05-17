@@ -55,9 +55,9 @@ class DetailViewModelTest {
 
         movies.value = detailMovie
 
-        `when`(movieId?.let { detailRepository.getOneMovie(it) }).thenReturn(movies)
-        val movieEntity = viewModel.getDetailMovie().value
-        movieId?.let { verify(detailRepository).getOneMovie(it) }
+        `when`(movieId?.let { detailRepository.getOneMovie(it, null) }).thenReturn(movies)
+        val movieEntity = viewModel.getDetailMovie(null).value
+        movieId?.let { verify(detailRepository).getOneMovie(it, null) }
 
         assertNotNull(movieEntity)
         assertEquals(detailMovie.id, movieEntity?.id)
@@ -65,7 +65,7 @@ class DetailViewModelTest {
         assertEquals(detailMovie.voteAverage, movieEntity?.voteAverage)
         assertEquals(detailMovie.originalLanguage, movieEntity?.originalLanguage)
 
-        viewModel.getDetailMovie().observeForever(movieObserver)
+        viewModel.getDetailMovie(null).observeForever(movieObserver)
         verify(movieObserver).onChanged(detailMovie)
 
     }
@@ -78,9 +78,9 @@ class DetailViewModelTest {
 
         tv.value = detailTV
 
-        `when`(tvId?.let { detailRepository.getOneTV(it) }).thenReturn(tv)
-        val tvEntity = viewModel.getDetailShow().value
-        tvId?.let { verify(detailRepository).getOneTV(it) }
+        `when`(tvId?.let { detailRepository.getOneTV(it, null) }).thenReturn(tv)
+        val tvEntity = viewModel.getDetailShow(null).value
+        tvId?.let { verify(detailRepository).getOneTV(it, null) }
 
         assertNotNull(tvEntity)
         assertEquals(detailTV.id, tvEntity?.id)
@@ -88,7 +88,7 @@ class DetailViewModelTest {
         assertEquals(detailTV.voteAverage, tvEntity?.voteAverage)
         assertEquals(detailTV.originalLanguage, tvEntity?.originalLanguage)
 
-        viewModel.getDetailShow().observeForever(tvObserver)
+        viewModel.getDetailShow(null).observeForever(tvObserver)
         verify(tvObserver).onChanged(detailTV)
     }
 }

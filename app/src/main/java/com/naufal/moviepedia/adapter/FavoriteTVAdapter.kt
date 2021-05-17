@@ -7,44 +7,43 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.naufal.moviepedia.activity.DetailActivity
 import com.naufal.moviepedia.databinding.ListMainBinding
-import com.naufal.moviepedia.model.MovieEntity
-import com.naufal.moviepedia.model.MovieItems
-import com.naufal.moviepedia.util.Constant.Companion.IMG_URL
+import com.naufal.moviepedia.model.TVItems
+import com.naufal.moviepedia.util.Constant
 
-class MovieAdapter : RecyclerView.Adapter<MovieAdapter.ViewHolder>() {
+class FavoriteTVAdapter : RecyclerView.Adapter<FavoriteTVAdapter.ViewHolder>() {
 
-    private var list = ArrayList<MovieEntity?>()
+    private var list = ArrayList<TVItems?>()
 
-    fun setMovies(list: List<MovieEntity>){
+    fun setTV(list : List<TVItems?>?){
         this.list.clear()
-        this.list.addAll(list)
+        list?.let { this.list.addAll(it) }
         notifyDataSetChanged()
     }
 
     class ViewHolder(private val binding : ListMainBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(movie : MovieEntity){
+        fun bind(tv: TVItems){
             with(binding){
-                txtTitle.text = movie.title
-                txtRate.text = movie.voteAverage.toString()
-                txtLanguage.text = movie.originalLanguage
+                txtTitle.text = tv.name
+                txtRate.text = tv.voteAverage.toString()
+                txtLanguage.text = tv.originalLanguage
 
                 itemView.setOnClickListener {
                     val intent = Intent(it.context, DetailActivity::class.java)
                     intent.apply {
-                        putExtra(DetailActivity.EXTRA_MOVIE, movie.id)
-                        putExtra(DetailActivity.EXTRA_TYPE, DetailActivity.TYPE_MOVIE)
+                        putExtra(DetailActivity.EXTRA_TV, tv.id)
+                        putExtra(DetailActivity.EXTRA_TYPE, DetailActivity.TYPE_TV)
                     }
                     it.context.startActivity(intent)
                 }
 
                 Glide.with(itemView.context)
-                    .load("$IMG_URL${movie.posterPath}")
+                    .load("${Constant.IMG_URL}${tv.posterPath}")
                     .into(imgMovie)
             }
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder (
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(
         ListMainBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 

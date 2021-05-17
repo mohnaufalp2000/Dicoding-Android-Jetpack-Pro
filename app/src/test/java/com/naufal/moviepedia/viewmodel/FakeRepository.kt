@@ -1,5 +1,6 @@
 package com.naufal.moviepedia.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.naufal.moviepedia.model.*
@@ -12,10 +13,10 @@ import com.naufal.moviepedia.source.AppSource
 
 class FakeRepository(private val remoteDataSource: RemoteDataSource) : AppSource {
 
-    override fun getAllMovies(): LiveData<ArrayList<MovieItems?>?> {
-        val movieResults = MutableLiveData<ArrayList<MovieItems?>?>()
+    override fun getAllMovies(context: Context?): LiveData<List<MovieItems?>?> {
+        val movieResults = MutableLiveData<List<MovieItems?>?>()
         remoteDataSource.getMovies(object : RemoteDataSource.LoadMoviesCallback{
-            override fun onMoviesReceived(movieResp: ArrayList<MovieResp>) {
+            override fun onMoviesReceived(movieResp: List<MovieResp>) {
                 val movieList = ArrayList<MovieItems?>()
                 for (response in movieResp){
                     val movieResponse = MovieItems(
@@ -29,11 +30,11 @@ class FakeRepository(private val remoteDataSource: RemoteDataSource) : AppSource
                 }
                 movieResults.postValue(movieList)
             }
-        })
+        }, context)
         return movieResults
     }
 
-    override fun getAllTV(): LiveData<ArrayList<TVItems?>?> {
+    override fun getAllTV(context: Context?): LiveData<ArrayList<TVItems?>?> {
         val tvResults = MutableLiveData<ArrayList<TVItems?>?>()
         remoteDataSource.getTV(object : RemoteDataSource.LoadTVCallback{
             override fun onTVReceived(tvResp: ArrayList<TVResp>) {
@@ -50,10 +51,10 @@ class FakeRepository(private val remoteDataSource: RemoteDataSource) : AppSource
                 }
                 tvResults.postValue(tvList)
             }
-        })
+        }, context)
         return tvResults
     }
-    override fun getOneMovie(id: Int?): LiveData<DetailMovieResponse?> {
+    override fun getOneMovie(id: Int?, context: Context?): LiveData<DetailMovieResponse?> {
         val detailMovieResults = MutableLiveData<DetailMovieResponse>()
 
         remoteDataSource.getDetailMovie(id, object : RemoteDataSource.LoadDetailMovieCallback{
@@ -74,10 +75,10 @@ class FakeRepository(private val remoteDataSource: RemoteDataSource) : AppSource
 
                 detailMovieResults.postValue(detailMovieResponse)
             }
-        })
+        }, context)
         return detailMovieResults
     }
-    override fun getOneTV(id: Int?): LiveData<DetailTVResponse?> {
+    override fun getOneTV(id: Int?, context: Context?): LiveData<DetailTVResponse?> {
         val detailTVResults = MutableLiveData<DetailTVResponse>()
 
         remoteDataSource.getDetailTV(id, object : RemoteDataSource.LoadDetailTVCallback{
@@ -100,8 +101,50 @@ class FakeRepository(private val remoteDataSource: RemoteDataSource) : AppSource
             }
 
 
-        })
+        }, context)
         return detailTVResults
+    }
+
+    override fun getFavoriteMovies(context: Context?): LiveData<List<MovieItems?>?> {
+        val movieResults = MutableLiveData<List<MovieItems?>?>()
+        remoteDataSource.getMovies(object : RemoteDataSource.LoadMoviesCallback{
+            override fun onMoviesReceived(movieResp: List<MovieResp>) {
+                val movieList = java.util.ArrayList<MovieItems?>()
+                for (response in movieResp){
+                    val movieResponse = MovieItems(
+                        id = response.id,
+                        title = response.title,
+                        posterPath = response.posterPath,
+                        voteAverage = response.rate,
+                        originalLanguage = response.language
+                    )
+                    movieList.add(movieResponse)
+                }
+                movieResults.postValue(movieList)
+            }
+        }, context)
+        return movieResults
+    }
+
+    override fun getFavoriteTV(context: Context?): LiveData<List<TVItems?>?> {
+        val tvResults = MutableLiveData<List<TVItems?>?>()
+        remoteDataSource.getTV(object : RemoteDataSource.LoadTVCallback{
+            override fun onTVReceived(tvResp: ArrayList<TVResp>) {
+                val tvList = ArrayList<TVItems?>()
+                for (response in tvResp){
+                    val tvResponse = TVItems(
+                        id = response.id,
+                        name = response.title,
+                        posterPath = response.posterPath,
+                        voteAverage = response.rate,
+                        originalLanguage = response.language
+                    )
+                    tvList.add(tvResponse)
+                }
+                tvResults.postValue(tvList)
+            }
+        }, context)
+        return tvResults
     }
 
 }

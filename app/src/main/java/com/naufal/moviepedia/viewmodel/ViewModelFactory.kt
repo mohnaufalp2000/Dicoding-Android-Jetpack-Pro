@@ -1,5 +1,6 @@
 package com.naufal.moviepedia.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.naufal.moviepedia.di.Injection
@@ -11,9 +12,9 @@ class ViewModelFactory(private val repository: Repository) : ViewModelProvider.N
         @Volatile
         private var instance: ViewModelFactory? = null
 
-        fun getInstance() : ViewModelFactory =
+        fun getInstance(context: Context?) : ViewModelFactory =
             instance ?: synchronized(this){
-                instance ?: ViewModelFactory(Injection.provideRepository()).apply {
+                instance ?: ViewModelFactory(Injection.provideRepository(context)).apply {
                     instance = this
                 }
             }
@@ -29,6 +30,12 @@ class ViewModelFactory(private val repository: Repository) : ViewModelProvider.N
             }
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 return DetailViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(FavMovieViewModel::class.java) -> {
+                return FavMovieViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(FavTVViewModel::class.java) -> {
+                return FavTVViewModel(repository) as T
             }
             else -> throw Throwable("Uknown" +modelClass.name)
         }

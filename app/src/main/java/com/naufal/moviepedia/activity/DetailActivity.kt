@@ -10,6 +10,8 @@ import com.naufal.moviepedia.R
 import com.naufal.moviepedia.databinding.ActivityDetailBinding
 import com.naufal.moviepedia.model.DetailMovieResponse
 import com.naufal.moviepedia.model.DetailTVResponse
+import com.naufal.moviepedia.model.MovieEntity
+import com.naufal.moviepedia.model.MovieItems
 import com.naufal.moviepedia.util.Constant.Companion.IMG_URL
 import com.naufal.moviepedia.viewmodel.DetailViewModel
 import com.naufal.moviepedia.viewmodel.ViewModelFactory
@@ -17,14 +19,16 @@ import com.naufal.moviepedia.viewmodel.ViewModelFactory
 class DetailActivity : AppCompatActivity() {
 
     private val binding by lazy {ActivityDetailBinding.inflate(layoutInflater)}
+    private lateinit var mDetailViewModel: DetailViewModel
+    private var state: Boolean? = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val factory = ViewModelFactory.getInstance()
-        val mDetailViewModel by lazy { ViewModelProvider(this, factory).get(DetailViewModel::class.java) }
+        val factory = ViewModelFactory.getInstance(this)
+        mDetailViewModel = ViewModelProvider(this, factory).get(DetailViewModel::class.java)
 
         setupToolbar()
 
@@ -39,7 +43,9 @@ class DetailActivity : AppCompatActivity() {
             when(intent.getIntExtra(EXTRA_TYPE, 0)){
                 0 -> {
                     mDetailViewModel.getDetailMovie(this).observe(this, { detail ->
+                        state = detail?.isFavorite
                         populateMovie(detail)
+                        addToFavoriteMovie(detail)
                     })
                 }
                 1 -> {
@@ -49,8 +55,16 @@ class DetailActivity : AppCompatActivity() {
                 }
             }
         }
+
+
     }
 
+    private fun addToFavoriteMovie(detail: MovieEntity?) {
+        binding.btnFavorite.setOnClickListener {
+            state = !state!!
+            detail?.let { it1 -> mDetailViewModel.setFavoriteMovies(it1, state!!) }
+        }
+    }
 
     private fun setupToolbar() {
         setSupportActionBar(binding.tbDetail)
@@ -86,16 +100,16 @@ class DetailActivity : AppCompatActivity() {
     }
 
 
-    private fun populateMovie(movies: DetailMovieResponse?) {
+    private fun populateMovie(movies: MovieEntity?) {
         loadingIndicator(true)
         binding.apply {
             txtTitle.text = movies?.title
             txtRating.text = movies?.voteAverage.toString()
-            txtOverview.text = movies?.overview
+//            txtOverview.text = movies?.overview
             txtLanguage.text = movies?.originalLanguage
-            txtRuntime.text = movies?.runtime.toString()
+//            txtRuntime.text = movies?.runtime.toString()
             txtReleased.text = movies?.releaseDate?.subSequence(0,4)
-            txtGenre.text = movies?.genres?.component1()?.component1()
+//            txtGenre.text = movies?.genres?.component1()?.component1()
             txtRuntimeHours.visibility = View.VISIBLE
 
             Glide.with(this@DetailActivity)
@@ -111,12 +125,14 @@ class DetailActivity : AppCompatActivity() {
                 pbDetail.visibility = View.GONE
                 appbarDetail.visibility = View.VISIBLE
                 detailScroll.visibility = View.VISIBLE
+                btnFavorite.visibility = View.VISIBLE
             }
         } else {
             binding.apply {
                 pbDetail.visibility = View.VISIBLE
                 appbarDetail.visibility = View.GONE
                 detailScroll.visibility = View.GONE
+                btnFavorite.visibility = View.GONE
             }
         }
     }

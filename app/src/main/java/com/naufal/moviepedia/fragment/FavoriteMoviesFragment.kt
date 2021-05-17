@@ -1,29 +1,29 @@
 package com.naufal.moviepedia.fragment
 
 import android.os.Bundle
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.naufal.moviepedia.adapter.TVAdapter
-import com.naufal.moviepedia.databinding.FragmentTVShowsBinding
-import com.naufal.moviepedia.viewmodel.TVViewModel
+import com.naufal.moviepedia.adapter.FavoriteMovieAdapter
+import com.naufal.moviepedia.databinding.FragmentFavoriteMoviesBinding
+import com.naufal.moviepedia.viewmodel.DetailViewModel
+import com.naufal.moviepedia.viewmodel.FavMovieViewModel
 import com.naufal.moviepedia.viewmodel.ViewModelFactory
 
-class TVShowsFragment : Fragment() {
+class FavoriteMoviesFragment : Fragment() {
 
-    private var binding : FragmentTVShowsBinding? = null
-    private val adapterShows = TVAdapter()
-
+    private var binding : FragmentFavoriteMoviesBinding? = null
+    private val adapterMovies = FavoriteMovieAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentTVShowsBinding.inflate(inflater, container, false)
+        binding = FragmentFavoriteMoviesBinding.inflate(inflater, container, false)
         return binding?.root
     }
 
@@ -31,22 +31,21 @@ class TVShowsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val factory = ViewModelFactory.getInstance(context)
-        val mTVViewModel by lazy {
-            ViewModelProvider(this, factory).get(TVViewModel::class.java)
+        val mDetailMovieViewModel by lazy {
+            ViewModelProvider(this, factory).get(DetailViewModel::class.java)
         }
 
-        mTVViewModel.getTV(context).observe(viewLifecycleOwner, { list ->
-            list?.let { adapterShows.setTV(it) }
+        mDetailMovieViewModel.getFavoriteMovies(context).observe(viewLifecycleOwner, {
+            adapterMovies.setMovies(it)
             showRecyclerView()
         })
-
     }
 
     private fun showRecyclerView() {
-        binding?.rvTvShows?.apply {
+        binding?.rvFavoriteMovie?.apply {
             setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
-            adapter = adapterShows
+            adapter = adapterMovies
         }
     }
 
