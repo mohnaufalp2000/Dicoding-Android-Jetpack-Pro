@@ -3,11 +3,10 @@ package com.naufal.moviepedia.viewmodel
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.naufal.moviepedia.model.DetailMovieResponse
 import com.naufal.moviepedia.model.DetailTVResponse
 import com.naufal.moviepedia.model.MovieEntity
-import com.naufal.moviepedia.model.MovieItems
 import com.naufal.moviepedia.repository.Repository
+import com.naufal.moviepedia.vo.Resource
 
 class DetailViewModel(private val detailRepository: Repository) : ViewModel() {
 
@@ -22,7 +21,7 @@ class DetailViewModel(private val detailRepository: Repository) : ViewModel() {
         this.tvId = tvId
     }
 
-    fun getDetailMovie(context: Context?) : LiveData<MovieEntity?> = detailRepository.getOneMovie(movieId, context)
+    fun getDetailMovie(context: Context?) : LiveData<Resource<MovieEntity?>> = detailRepository.getOneMovie(movieId, context)
 
     fun getDetailShow(context: Context?): LiveData<DetailTVResponse?> = detailRepository.getOneTV(tvId, context)
 

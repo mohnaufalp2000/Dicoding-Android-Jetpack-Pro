@@ -13,7 +13,7 @@ interface MovieDao {
     fun getMovies() : LiveData<List<MovieEntity>>
 
     @Query("SELECT * FROM movie WHERE movie.id = :id")
-    fun getOneMovies(id: Int?) : LiveData<MovieEntity?>
+    fun getOneMovies(id: Int?) : LiveData<MovieEntity>
 
     @Query("SELECT * FROM movie WHERE isFavorite = 1")
     fun getFavoriteMovies(): LiveData<List<MovieEntity?>?>

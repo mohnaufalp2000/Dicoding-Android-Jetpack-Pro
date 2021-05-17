@@ -59,7 +59,7 @@ class Repository(
                         posterPath = response.posterPath,
                         voteAverage = response.rate,
                         isFavorite = false,
-                        originalLanguage = response.language
+                        originalLanguage = response.language,
                     )
                     movieList.add(movieResponse)
                 }
@@ -92,8 +92,33 @@ class Repository(
     override fun getOneMovie(
         id: Int?,
         context: Context?
-    ): LiveData<MovieEntity?> =
-        localDataSource.getOneMovies(id)
+    ): LiveData<Resource<MovieEntity?>>
+    {
+        return object : NetworkBoundResource<MovieEntity, DetailMovieResp>(appExecutors){
+            override fun loadFromDB(): LiveData<MovieEntity> =
+                localDataSource.getOneMovies(id)
+
+            override fun shouldFetch(data: MovieEntity?): Boolean =
+                data?.overview.isNullOrEmpty()
+
+            override fun createCall(): LiveData<ApiResponse<DetailMovieResp>> =
+                remoteDataSource.getDetailMovie(id, context)
+
+            override fun saveCallResult(data: DetailMovieResp) {
+                val detailMovie = MovieEntity(
+                    id = data.id,
+                    title = data.title,
+                    posterPath = data.posterPath,
+                    voteAverage = data.rate,
+                    originalLanguage = data.language,
+                    overview = data.overview,
+                    runtime = data.runtime,
+                    releaseDate = data.release
+                )
+                localDataSource.updateMovies(detailMovie)
+            }
+        }.asLiveData()
+    }
 
     override fun getOneTV(id: Int?, context: Context?): LiveData<DetailTVResponse?> {
         val detailTVResults = MutableLiveData<DetailTVResponse>()

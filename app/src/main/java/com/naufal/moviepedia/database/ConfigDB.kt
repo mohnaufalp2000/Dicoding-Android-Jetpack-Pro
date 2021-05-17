@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.naufal.moviepedia.model.MovieEntity
 import com.naufal.moviepedia.model.MovieItems
 
-@Database(entities = [MovieEntity::class], version = 1, exportSchema = false)
+@Database(entities = [MovieEntity::class], version = 3, exportSchema = false)
 abstract class ConfigDB : RoomDatabase() {
 
     abstract fun movieDao() : MovieDao
@@ -23,7 +23,7 @@ abstract class ConfigDB : RoomDatabase() {
                     context!!.applicationContext,
                     ConfigDB::class.java,
                     "Catalogue.db"
-                ).build().apply {
+                ).fallbackToDestructiveMigration().build().apply {
                     INSTANCE = this
                 }
             }

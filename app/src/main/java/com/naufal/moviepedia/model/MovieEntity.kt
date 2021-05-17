@@ -29,6 +29,15 @@ data class MovieEntity(
     @ColumnInfo(name = "date")
     var date: String? = null,
 
+    @ColumnInfo(name = "overview")
+    var overview: String? = null,
+
+    @ColumnInfo(name = "runtime")
+    var runtime: Int? = null,
+
+    @ColumnInfo(name = "status")
+    var status: String? = null,
+
     @ColumnInfo(name = "isFavorite")
     var isFavorite: Boolean? = false
 )

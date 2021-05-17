@@ -43,9 +43,9 @@ class DetailActivity : AppCompatActivity() {
             when(intent.getIntExtra(EXTRA_TYPE, 0)){
                 0 -> {
                     mDetailViewModel.getDetailMovie(this).observe(this, { detail ->
-                        state = detail?.isFavorite
-                        populateMovie(detail)
-                        addToFavoriteMovie(detail)
+                        state = detail.data?.isFavorite
+                        populateMovie(detail.data)
+                        addToFavoriteMovie(detail.data)
                     })
                 }
                 1 -> {
@@ -105,9 +105,9 @@ class DetailActivity : AppCompatActivity() {
         binding.apply {
             txtTitle.text = movies?.title
             txtRating.text = movies?.voteAverage.toString()
-//            txtOverview.text = movies?.overview
+            txtOverview.text = movies?.overview
             txtLanguage.text = movies?.originalLanguage
-//            txtRuntime.text = movies?.runtime.toString()
+            txtRuntime.text = movies?.runtime.toString()
             txtReleased.text = movies?.releaseDate?.subSequence(0,4)
 //            txtGenre.text = movies?.genres?.component1()?.component1()
             txtRuntimeHours.visibility = View.VISIBLE

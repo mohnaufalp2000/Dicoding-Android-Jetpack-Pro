@@ -17,12 +17,16 @@ class MovieLocalDataSource(private val mMovieDao: MovieDao) {
 
     fun getAllMovies(): LiveData<List<MovieEntity>> = mMovieDao.getMovies()
 
-    fun getOneMovies(id: Int?) : LiveData<MovieEntity?> =
+    fun getOneMovies(id: Int?) : LiveData<MovieEntity> =
         mMovieDao.getOneMovies(id)
 
     fun getFavoriteMovies(): LiveData<List<MovieEntity?>?> = mMovieDao.getFavoriteMovies()
 
     fun addMovies(movieItems: List<MovieEntity>) = mMovieDao.addMovies(movieItems)
+    
+    fun updateMovies(movieItems: MovieEntity){
+        mMovieDao.updateMovies(movieItems)
+    }
 
     fun setFavoriteMovie(movieItems: MovieEntity, newState: Boolean){
         movieItems.isFavorite = newState

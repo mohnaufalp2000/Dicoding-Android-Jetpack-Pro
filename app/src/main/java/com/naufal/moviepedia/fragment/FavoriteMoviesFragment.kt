@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.naufal.moviepedia.adapter.FavoriteMovieAdapter
 import com.naufal.moviepedia.databinding.FragmentFavoriteMoviesBinding
 import com.naufal.moviepedia.viewmodel.DetailViewModel
-import com.naufal.moviepedia.viewmodel.FavMovieViewModel
 import com.naufal.moviepedia.viewmodel.ViewModelFactory
 
 class FavoriteMoviesFragment : Fragment() {
