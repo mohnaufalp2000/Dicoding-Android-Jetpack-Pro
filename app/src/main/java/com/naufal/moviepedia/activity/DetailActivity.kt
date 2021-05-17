@@ -2,6 +2,7 @@ package com.naufal.moviepedia.activity
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,7 @@ import com.naufal.moviepedia.model.*
 import com.naufal.moviepedia.util.Constant.Companion.IMG_URL
 import com.naufal.moviepedia.viewmodel.DetailViewModel
 import com.naufal.moviepedia.viewmodel.ViewModelFactory
+import com.naufal.moviepedia.vo.Status
 
 class DetailActivity : AppCompatActivity() {
 
@@ -41,35 +43,68 @@ class DetailActivity : AppCompatActivity() {
             when(intent.getIntExtra(EXTRA_TYPE, 0)){
                 0 -> {
                     mDetailViewModel.getDetailMovie(this).observe(this, { detail ->
-                        stateMovie = detail.data?.isFavorite
-                        populateMovie(detail.data)
-                        addToFavoriteMovie(detail.data)
+                        if (detail != null){
+                            when(detail.status){
+                                Status.LOADING -> binding.pbDetail.visibility = View.VISIBLE
+                                Status.SUCCESS -> if (detail.data != null){
+                                    loadingIndicator(false)
+                                    stateMovie = detail.data.isFavorite
+                                    populateMovie(detail.data)
+                                    addToFavoriteMovie(detail.data)
+                                }
+                                Status.ERROR -> {
+                                    loadingIndicator(false)
+                                    Toast.makeText(this, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
+
                     })
                 }
                 1 -> {
                     mDetailViewModel.getDetailTV(this).observe(this, { detail ->
-                        stateTV = detail?.data?.isFavorite
-                        populateTV(detail.data)
-                        addToFavoriteTV(detail.data)
+                        if (detail != null){
+                            when(detail.status){
+                                Status.LOADING -> binding.pbDetail.visibility = View.VISIBLE
+                                Status.SUCCESS -> if (detail.data != null){
+                                    loadingIndicator(false)
+                                    stateTV = detail.data.isFavorite
+                                    populateTV(detail.data)
+                                    addToFavoriteTV(detail.data)
+                                }
+                                Status.ERROR -> {
+                                    loadingIndicator(false)
+                                    Toast.makeText(this, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        }
                     })
                 }
             }
-        }
-
-
-    }
-
-    private fun addToFavoriteTV(data: TVEntity?) {
-        binding.btnFavorite.setOnClickListener {
-            stateTV = !stateTV!!
-            data?.let { it1 -> mDetailViewModel.setFavoriteTV(it1, stateTV!!) }
         }
     }
 
     private fun addToFavoriteMovie(detail: MovieEntity?) {
         binding.btnFavorite.setOnClickListener {
             stateMovie = !stateMovie!!
-            detail?.let { it1 -> mDetailViewModel.setFavoriteMovies(it1, stateMovie!!) }
+            if (stateMovie as Boolean){
+                binding.btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+            } else {
+                binding.btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            }
+            detail?.let { favorite -> mDetailViewModel.setFavoriteMovies(favorite, stateMovie!!) }
+        }
+    }
+
+    private fun addToFavoriteTV(data: TVEntity?) {
+        binding.btnFavorite.setOnClickListener {
+            stateTV = !stateTV!!
+            if (stateTV as Boolean){
+                binding.btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+            } else {
+                binding.btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            }
+            data?.let { favorite -> mDetailViewModel.setFavoriteTV(favorite, stateTV!!) }
         }
     }
 
@@ -80,6 +115,27 @@ class DetailActivity : AppCompatActivity() {
         binding.tbDetail.setNavigationOnClickListener {
             finish()
         }
+    }
+
+    private fun populateMovie(movies: MovieEntity?) {
+        loadingIndicator(true)
+        binding.apply {
+            txtTitle.text = movies?.title
+            txtRating.text = movies?.voteAverage.toString()
+            txtOverview.text = movies?.overview
+            txtLanguage.text = movies?.originalLanguage
+            txtRuntime.text = movies?.runtime.toString()
+            txtReleased.text = movies?.releaseDate?.subSequence(0,4)
+//            txtGenre.text = movies?.genres?.component1()?.component1()
+            txtRuntimeHours.visibility = View.VISIBLE
+
+            checkFavState(stateMovie)
+
+            Glide.with(this@DetailActivity)
+                .load("$IMG_URL${movies?.posterPath}")
+                .into(imgPoster)
+        }
+
     }
 
     private fun populateTV(tv: TVEntity?) {
@@ -99,6 +155,8 @@ class DetailActivity : AppCompatActivity() {
 //            }
             txtReleased.text = tv?.firstAirDate?.subSequence(0,4)
 
+            checkFavState(stateTV)
+
             Glide.with(this@DetailActivity)
                 .load("$IMG_URL${tv?.posterPath}")
                 .into(imgPoster)
@@ -106,24 +164,12 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
-
-    private fun populateMovie(movies: MovieEntity?) {
-        loadingIndicator(true)
-        binding.apply {
-            txtTitle.text = movies?.title
-            txtRating.text = movies?.voteAverage.toString()
-            txtOverview.text = movies?.overview
-            txtLanguage.text = movies?.originalLanguage
-            txtRuntime.text = movies?.runtime.toString()
-            txtReleased.text = movies?.releaseDate?.subSequence(0,4)
-//            txtGenre.text = movies?.genres?.component1()?.component1()
-            txtRuntimeHours.visibility = View.VISIBLE
-
-            Glide.with(this@DetailActivity)
-                .load("$IMG_URL${movies?.posterPath}")
-                .into(imgPoster)
+    private fun checkFavState(state: Boolean?) {
+        if (state == true){
+            binding.btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
+        } else {
+            binding.btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
         }
-
     }
 
     private fun loadingIndicator(indicator: Boolean) {
