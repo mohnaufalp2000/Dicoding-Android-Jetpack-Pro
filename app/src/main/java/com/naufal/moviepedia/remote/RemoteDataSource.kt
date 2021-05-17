@@ -60,8 +60,9 @@ class RemoteDataSource {
         return result
     }
 
-    fun getTV(callback: LoadTVCallback, context: Context?) {
+    fun getTV(context: Context?) : LiveData<ApiResponse<List<TVResp>>> {
         idling.increment()
+        val result = MutableLiveData<ApiResponse<List<TVResp>>>()
         ConfigNetwork.getApi().getShows().enqueue(object : Callback<TVResponse> {
             override fun onResponse(call: Call<TVResponse>, response: Response<TVResponse>) {
                 val body = response.body()?.results
@@ -80,7 +81,7 @@ class RemoteDataSource {
                     }
                 }
 
-                callback.onTVReceived(tvResults)
+                result.value = ApiResponse.success(tvResults)
 
             }
             override fun onFailure(call: Call<TVResponse>, t: Throwable) {
@@ -88,7 +89,7 @@ class RemoteDataSource {
             }
         })
         idling.decrement()
-
+        return result
     }
 
     fun getDetailMovie(id: Int?, context: Context?): LiveData<ApiResponse<DetailMovieResp>> {
@@ -136,26 +137,27 @@ class RemoteDataSource {
         return result
     }
 
-    fun getDetailTV(id: Int?, callback: LoadDetailTVCallback, context: Context?) {
+    fun getDetailTV(id: Int?, context: Context?) : LiveData<ApiResponse<DetailTVResp>> {
         idling.increment()
+        val result = MutableLiveData<ApiResponse<DetailTVResp>>()
         ConfigNetwork.getApi().getDetailTV(id).enqueue(object : Callback<DetailTVResponse>{
             override fun onResponse(
                 call: Call<DetailTVResponse>,
                 response: Response<DetailTVResponse>
             ) {
                 val body = response.body()
-                val genreItems = response.body()?.genres
+//                val genreItems = response.body()?.genres
                 val genreResults = ArrayList<TVGenreResp>()
 
-                if (genreItems != null) {
-                    for (item in genreItems){
-                        val genreResponse = TVGenreResp(
-                            id = item?.id,
-                            name = item?.name
-                        )
-                        genreResults.add(genreResponse)
-                    }
-                }
+//                if (genreItems != null) {
+//                    for (item in genreItems){
+//                        val genreResponse = TVGenreResp(
+//                            id = item?.id,
+//                            name = item?.name
+//                        )
+//                        genreResults.add(genreResponse)
+//                    }
+//                }
 
                 val detailTV = DetailTVResp(
                     id = body?.id,
@@ -165,10 +167,10 @@ class RemoteDataSource {
                     language = body?.originalLanguage,
                     overview = body?.overview,
                     runtime = body?.episodeRunTime,
-                    released = body?.firstAirDate,
-                    genres = genreResults
+                    released = body?.firstAirDate
+//                    genres = genreResults
                 )
-             callback.onDetailTVReceived(detailTV)
+             result.value = ApiResponse.success(detailTV)
             }
 
             override fun onFailure(call: Call<DetailTVResponse>, t: Throwable) {
@@ -176,6 +178,7 @@ class RemoteDataSource {
             }
         })
         idling.decrement()
+        return result
     }
 
     interface LoadMoviesCallback{

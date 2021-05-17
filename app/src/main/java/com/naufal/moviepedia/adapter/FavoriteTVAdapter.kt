@@ -7,21 +7,22 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.naufal.moviepedia.activity.DetailActivity
 import com.naufal.moviepedia.databinding.ListMainBinding
+import com.naufal.moviepedia.model.TVEntity
 import com.naufal.moviepedia.model.TVItems
 import com.naufal.moviepedia.util.Constant
 
 class FavoriteTVAdapter : RecyclerView.Adapter<FavoriteTVAdapter.ViewHolder>() {
 
-    private var list = ArrayList<TVItems?>()
+    private var list = ArrayList<TVEntity?>()
 
-    fun setTV(list : List<TVItems?>?){
+    fun setTV(list : List<TVEntity?>?){
         this.list.clear()
         list?.let { this.list.addAll(it) }
         notifyDataSetChanged()
     }
 
     class ViewHolder(private val binding : ListMainBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(tv: TVItems){
+        fun bind(tv: TVEntity){
             with(binding){
                 txtTitle.text = tv.name
                 txtRate.text = tv.voteAverage.toString()

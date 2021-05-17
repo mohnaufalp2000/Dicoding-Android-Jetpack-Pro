@@ -3,7 +3,6 @@ package com.naufal.moviepedia.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "movie")
 data class MovieEntity(
@@ -34,9 +33,6 @@ data class MovieEntity(
 
     @ColumnInfo(name = "runtime")
     var runtime: Int? = null,
-
-    @ColumnInfo(name = "status")
-    var status: String? = null,
 
     @ColumnInfo(name = "isFavorite")
     var isFavorite: Boolean? = false

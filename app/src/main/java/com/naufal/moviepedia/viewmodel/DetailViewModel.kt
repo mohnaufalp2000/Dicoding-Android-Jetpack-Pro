@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.naufal.moviepedia.model.DetailTVResponse
 import com.naufal.moviepedia.model.MovieEntity
+import com.naufal.moviepedia.model.TVEntity
 import com.naufal.moviepedia.repository.Repository
 import com.naufal.moviepedia.vo.Resource
 
@@ -23,12 +24,19 @@ class DetailViewModel(private val detailRepository: Repository) : ViewModel() {
 
     fun getDetailMovie(context: Context?) : LiveData<Resource<MovieEntity?>> = detailRepository.getOneMovie(movieId, context)
 
-    fun getDetailShow(context: Context?): LiveData<DetailTVResponse?> = detailRepository.getOneTV(tvId, context)
+    fun getDetailTV(context: Context?): LiveData<Resource<TVEntity?>> = detailRepository.getOneTV(tvId, context)
 
     fun setFavoriteMovies(movieItems: MovieEntity, state: Boolean){
         detailRepository.setFavoriteMovies(movieItems, state)
     }
+
     fun getFavoriteMovies(context: Context?) : LiveData<List<MovieEntity?>?> = detailRepository.getFavoriteMovies(context)
+
+    fun setFavoriteTV(tvItems: TVEntity, state: Boolean){
+        detailRepository.setFavoriteTV(tvItems, state)
+    }
+
+    fun getFavoriteTV(context: Context?) : LiveData<List<TVEntity?>?> = detailRepository.getFavoriteTV(context)
 
 
 }

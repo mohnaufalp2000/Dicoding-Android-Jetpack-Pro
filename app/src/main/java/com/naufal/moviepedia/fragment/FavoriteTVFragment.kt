@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.naufal.moviepedia.adapter.FavoriteTVAdapter
 import com.naufal.moviepedia.databinding.FragmentFavoriteTVBinding
-import com.naufal.moviepedia.viewmodel.FavTVViewModel
+import com.naufal.moviepedia.viewmodel.DetailViewModel
 import com.naufal.moviepedia.viewmodel.ViewModelFactory
 
 class FavoriteTVFragment : Fragment() {
@@ -30,11 +30,11 @@ class FavoriteTVFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val factory = ViewModelFactory.getInstance(context)
-        val mFavTVViewModel by lazy {
-            ViewModelProvider(this, factory).get(FavTVViewModel::class.java)
+        val mDetailMovieViewModel by lazy {
+            ViewModelProvider(this, factory).get(DetailViewModel::class.java)
         }
 
-        mFavTVViewModel.getFavoriteTV(context).observe(viewLifecycleOwner, {
+        mDetailMovieViewModel.getFavoriteTV(context).observe(viewLifecycleOwner, {
             adapterTV.setTV(it)
             showRecyclerView()
         })

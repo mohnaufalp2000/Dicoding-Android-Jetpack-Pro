@@ -3,7 +3,7 @@ package com.naufal.moviepedia.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.naufal.moviepedia.local.MovieLocalDataSource
+import com.naufal.moviepedia.local.LocalDataSource
 import com.naufal.moviepedia.model.*
 import com.naufal.moviepedia.remote.ApiResponse
 import com.naufal.moviepedia.remote.RemoteDataSource
@@ -18,7 +18,7 @@ import com.naufal.moviepedia.vo.Resource
 
 class Repository(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: MovieLocalDataSource,
+    private val localDataSource: LocalDataSource,
     private val appExecutors: AppExecutors
     ) : AppSource {
 
@@ -28,7 +28,7 @@ class Repository(
 
         fun getInstance(
             remoteData: RemoteDataSource,
-            localDataSource: MovieLocalDataSource,
+            localDataSource: LocalDataSource,
             appExecutors: AppExecutors
         ): Repository =
             instance ?: synchronized(this) {
@@ -68,25 +68,35 @@ class Repository(
         }.asLiveData()
     }
 
-    override fun getAllTV(context: Context?): LiveData<ArrayList<TVItems?>?> {
-        val tvResults = MutableLiveData<ArrayList<TVItems?>?>()
-        remoteDataSource.getTV(object : RemoteDataSource.LoadTVCallback {
-            override fun onTVReceived(tvResp: ArrayList<TVResp>) {
-                val tvList = ArrayList<TVItems?>()
-                for (response in tvResp) {
-                    val tvResponse = TVItems(
+    override fun getAllTV(context: Context?): LiveData<Resource<List<TVEntity>?>> {
+
+        return object : NetworkBoundResource<List<TVEntity>, List<TVResp>>(appExecutors) {
+            override fun loadFromDB(): LiveData<List<TVEntity>> =
+                localDataSource.getAllTV()
+
+            override fun shouldFetch(data: List<TVEntity>?): Boolean =
+                data == null || data.isEmpty()
+
+            override fun createCall(): LiveData<ApiResponse<List<TVResp>>> =
+                remoteDataSource.getTV(context)
+
+            override fun saveCallResult(data: List<TVResp>) {
+                val tvList = ArrayList<TVEntity>()
+                for (response in data) {
+                    val tvResponse = TVEntity(
                         id = response.id,
                         name = response.title,
                         posterPath = response.posterPath,
                         voteAverage = response.rate,
-                        originalLanguage = response.language
+                        isFavorite = false,
+                        originalLanguage = response.language,
                     )
                     tvList.add(tvResponse)
                 }
-                tvResults.postValue(tvList)
+                localDataSource.addTV(tvList)
             }
-        }, context)
-        return tvResults
+
+        }.asLiveData()
     }
 
     override fun getOneMovie(
@@ -120,11 +130,22 @@ class Repository(
         }.asLiveData()
     }
 
-    override fun getOneTV(id: Int?, context: Context?): LiveData<DetailTVResponse?> {
-        val detailTVResults = MutableLiveData<DetailTVResponse>()
+    override fun getOneTV(
+        id: Int?,
+        context: Context?
+    ): LiveData<Resource<TVEntity?>> {
 
-        remoteDataSource.getDetailTV(id, object : RemoteDataSource.LoadDetailTVCallback{
-            override fun onDetailTVReceived(detailTvResp: DetailTVResp) {
+        return object : NetworkBoundResource<TVEntity, DetailTVResp>(appExecutors){
+            override fun loadFromDB(): LiveData<TVEntity> =
+                localDataSource.getOneTV(id)
+
+            override fun shouldFetch(data: TVEntity?): Boolean =
+                data?.overview.isNullOrEmpty()
+
+            override fun createCall(): LiveData<ApiResponse<DetailTVResp>> =
+                remoteDataSource.getDetailTV(id, context)
+
+            override fun saveCallResult(data: DetailTVResp) {
 //                val genresItem = ArrayList<GenresTVItem?>()
 //
 //                for (response in detailTvResp.genres!!){
@@ -135,52 +156,36 @@ class Repository(
 //                    genresItem.add(genre)
 //                }
 
-                val detailTVResponse = DetailTVResponse(
-                    id = detailTvResp.id,
-                    name = detailTvResp.title,
-                    posterPath = detailTvResp.posterPath,
-                    voteAverage = detailTvResp.rate,
-                    originalLanguage = detailTvResp.language,
-                    overview = detailTvResp.overview,
-                    firstAirDate = detailTvResp.released,
-                    episodeRunTime = detailTvResp.runtime,
+                val detailTV = TVEntity(
+                    id = data.id,
+                    name = data.title,
+                    posterPath = data.posterPath,
+                    voteAverage = data.rate,
+                    originalLanguage = data.language,
+                    overview = data.overview,
+                    firstAirDate = data.released,
+//                    episodeRunTime = data.runtime,
 //                    genres = genresItem
                 )
-
-                detailTVResults.postValue(detailTVResponse)
+                localDataSource.updateTV(detailTV)
             }
+        }.asLiveData()
 
-
-        }, context)
-        return detailTVResults
     }
+
 
     override fun getFavoriteMovies(context: Context?): LiveData<List<MovieEntity?>?> =
         localDataSource.getFavoriteMovies()
 
-    override fun getFavoriteTV(context: Context?): LiveData<List<TVItems?>?> {
-        val tvResults = MutableLiveData<List<TVItems?>?>()
-        remoteDataSource.getTV(object : RemoteDataSource.LoadTVCallback{
-            override fun onTVReceived(tvResp: ArrayList<TVResp>) {
-                val tvList = ArrayList<TVItems?>()
-                for (response in tvResp){
-                    val tvResponse = TVItems(
-                        id = response.id,
-                        name = response.title,
-                        posterPath = response.posterPath,
-                        voteAverage = response.rate,
-                        originalLanguage = response.language
-                    )
-                    tvList.add(tvResponse)
-                }
-                tvResults.postValue(tvList)
-            }
-        }, context)
-        return tvResults
-    }
+    override fun getFavoriteTV(context: Context?): LiveData<List<TVEntity?>?> =
+        localDataSource.getFavoriteTV()
 
     override fun setFavoriteMovies(movieItems: MovieEntity, state: Boolean) {
         appExecutors.diskIO().execute{localDataSource.setFavoriteMovie(movieItems, state)}
+    }
+
+    override fun setFavoriteTV(tvItems: TVEntity, state: Boolean) {
+        appExecutors.diskIO().execute{localDataSource.setFavoriteTV(tvItems, state)}
     }
 
 

@@ -6,11 +6,13 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.naufal.moviepedia.model.MovieEntity
 import com.naufal.moviepedia.model.MovieItems
+import com.naufal.moviepedia.model.TVEntity
 
-@Database(entities = [MovieEntity::class], version = 3, exportSchema = false)
+@Database(entities = [MovieEntity::class, TVEntity::class], version = 4, exportSchema = false)
 abstract class ConfigDB : RoomDatabase() {
 
     abstract fun movieDao() : MovieDao
+    abstract fun tvDao() : TVDao
 
     companion object{
 

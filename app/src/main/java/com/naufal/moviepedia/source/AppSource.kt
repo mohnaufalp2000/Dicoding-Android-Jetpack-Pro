@@ -9,10 +9,11 @@ import retrofit2.Response
 interface AppSource {
 
     fun getAllMovies(context: Context?) : LiveData<Resource<List<MovieEntity>?>>
-    fun getAllTV(context: Context?) : LiveData<ArrayList<TVItems?>?>
+    fun getAllTV(context: Context?) : LiveData<Resource<List<TVEntity>?>>
     fun getOneMovie(id: Int?, context: Context?) : LiveData<Resource<MovieEntity?>>
-    fun getOneTV(id: Int?, context: Context?) : LiveData<DetailTVResponse?>
+    fun getOneTV(id: Int?, context: Context?) : LiveData<Resource<TVEntity?>>
     fun getFavoriteMovies(context: Context?) : LiveData<List<MovieEntity?>?>
-    fun getFavoriteTV(context: Context?) : LiveData<List<TVItems?>?>
+    fun getFavoriteTV(context: Context?) : LiveData<List<TVEntity?>?>
     fun setFavoriteMovies(movieItems: MovieEntity, state: Boolean)
+    fun setFavoriteTV(tvItems: TVEntity, state: Boolean)
 }

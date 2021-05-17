@@ -8,10 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.naufal.moviepedia.R
 import com.naufal.moviepedia.databinding.ActivityDetailBinding
-import com.naufal.moviepedia.model.DetailMovieResponse
-import com.naufal.moviepedia.model.DetailTVResponse
-import com.naufal.moviepedia.model.MovieEntity
-import com.naufal.moviepedia.model.MovieItems
+import com.naufal.moviepedia.model.*
 import com.naufal.moviepedia.util.Constant.Companion.IMG_URL
 import com.naufal.moviepedia.viewmodel.DetailViewModel
 import com.naufal.moviepedia.viewmodel.ViewModelFactory
@@ -20,7 +17,8 @@ class DetailActivity : AppCompatActivity() {
 
     private val binding by lazy {ActivityDetailBinding.inflate(layoutInflater)}
     private lateinit var mDetailViewModel: DetailViewModel
-    private var state: Boolean? = false
+    private var stateMovie: Boolean? = false
+    private var stateTV: Boolean? = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -43,14 +41,16 @@ class DetailActivity : AppCompatActivity() {
             when(intent.getIntExtra(EXTRA_TYPE, 0)){
                 0 -> {
                     mDetailViewModel.getDetailMovie(this).observe(this, { detail ->
-                        state = detail.data?.isFavorite
+                        stateMovie = detail.data?.isFavorite
                         populateMovie(detail.data)
                         addToFavoriteMovie(detail.data)
                     })
                 }
                 1 -> {
-                    mDetailViewModel.getDetailShow(this).observe(this, { detail ->
-                        populateTV(detail)
+                    mDetailViewModel.getDetailTV(this).observe(this, { detail ->
+                        stateTV = detail?.data?.isFavorite
+                        populateTV(detail.data)
+                        addToFavoriteTV(detail.data)
                     })
                 }
             }
@@ -59,10 +59,17 @@ class DetailActivity : AppCompatActivity() {
 
     }
 
+    private fun addToFavoriteTV(data: TVEntity?) {
+        binding.btnFavorite.setOnClickListener {
+            stateTV = !stateTV!!
+            data?.let { it1 -> mDetailViewModel.setFavoriteTV(it1, stateTV!!) }
+        }
+    }
+
     private fun addToFavoriteMovie(detail: MovieEntity?) {
         binding.btnFavorite.setOnClickListener {
-            state = !state!!
-            detail?.let { it1 -> mDetailViewModel.setFavoriteMovies(it1, state!!) }
+            stateMovie = !stateMovie!!
+            detail?.let { it1 -> mDetailViewModel.setFavoriteMovies(it1, stateMovie!!) }
         }
     }
 
@@ -75,21 +82,21 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateTV(tv: DetailTVResponse?) {
+    private fun populateTV(tv: TVEntity?) {
         loadingIndicator(true)
         binding.apply {
             txtTitle.text = tv?.name
             txtRating.text = tv?.voteAverage.toString()
             txtOverview.text = tv?.overview
             txtLanguage.text = tv?.originalLanguage
-            txtGenre.text = tv?.genres?.component1()?.component1()
-            if (tv?.episodeRunTime?.size != 0){
-                if (tv != null) {
-                    txtRuntime.text = tv.episodeRunTime?.get(0).toString()
-                }
-            } else {
-                txtRuntime.text = 0.toString()
-            }
+//            txtGenre.text = tv?.genres?.component1()?.component1()
+//            if (tv?.episodeRunTime?.size != 0){
+//                if (tv != null) {
+//                    txtRuntime.text = tv.episodeRunTime?.get(0).toString()
+//                }
+//            } else {
+//                txtRuntime.text = 0.toString()
+//            }
             txtReleased.text = tv?.firstAirDate?.subSequence(0,4)
 
             Glide.with(this@DetailActivity)
