@@ -7,10 +7,7 @@ import com.naufal.moviepedia.local.LocalDataSource
 import com.naufal.moviepedia.model.MovieEntity
 import com.naufal.moviepedia.model.TVEntity
 import com.naufal.moviepedia.remote.RemoteDataSource
-import com.naufal.moviepedia.util.AppExecutors
-import com.naufal.moviepedia.util.DataDummy
-import com.naufal.moviepedia.util.LiveDataTestUtil
-import com.naufal.moviepedia.util.PagedListUtil
+import com.naufal.moviepedia.util.*
 import com.naufal.moviepedia.viewmodel.FakeRepository
 import com.naufal.moviepedia.vo.Resource
 import org.junit.Test
@@ -26,7 +23,7 @@ class RepositoryTest {
 
     private val remote = mock(RemoteDataSource::class.java)
     private val local = mock(LocalDataSource::class.java)
-    private val appExecutors = mock(AppExecutors::class.java)
+    private val appExecutors = AppExecutors(TestExecutor(), TestExecutor(), TestExecutor())
 
     private val fakeRepository = FakeRepository(remote, local, appExecutors)
 
@@ -57,6 +54,28 @@ class RepositoryTest {
     }
 
     @Test
+    fun getOneMovie() {
+        val dummyMovie = MutableLiveData<MovieEntity>()
+        dummyMovie.value = movieResponses[0]
+        `when`(local.getOneMovies(movieResponses[0].id)).thenReturn(dummyMovie)
+
+        val movieEntities = LiveDataTestUtil.getValue(fakeRepository.getOneMovie(movieResponses[0].id, null))
+        verify(local).getOneMovies(movieResponses[0].id)
+        assertNotNull(movieEntities)
+    }
+
+    @Test
+    fun getOneTV() {
+        val dummyTV = MutableLiveData<TVEntity>()
+        dummyTV.value = tvResponses[0]
+        `when`(local.getOneTV(tvResponses[0].id)).thenReturn(dummyTV)
+
+        val tvEntities = LiveDataTestUtil.getValue(fakeRepository.getOneTV(tvResponses[0].id, null))
+        verify(local).getOneTV(tvResponses[0].id)
+        assertNotNull(tvEntities)
+    }
+
+    @Test
     fun getFavoriteMovies(){
         val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieEntity>
         `when`(local.getFavoriteMovies()).thenReturn(dataSourceFactory)
@@ -79,24 +98,19 @@ class RepositoryTest {
     }
 
     @Test
-    fun getOneMovie() {
-        val dummyMovie = MutableLiveData<MovieEntity>()
-        dummyMovie.value = movieResponses[0]
-        `when`(local.getOneMovies(movieResponses[0].id)).thenReturn(dummyMovie)
+    fun setFavoriteMovies(){
+        val dummy = movieResponses[0]
+        fakeRepository.setFavoriteMovies(dummy, true)
 
-        val movieEntities = LiveDataTestUtil.getValue(fakeRepository.getOneMovie(movieResponses[0].id, null))
-        verify(local).getOneMovies(movieResponses[0].id)
-        assertNotNull(movieEntities)
+        verify(local, times(1)).setFavoriteMovie(dummy, true)
     }
 
     @Test
-    fun getOneTV() {
-        val dummyTV = MutableLiveData<TVEntity>()
-        dummyTV.value = tvResponses[0]
-        `when`(local.getOneTV(tvResponses[0].id)).thenReturn(dummyTV)
+    fun setFavoriteTV(){
+        val dummy = tvResponses[0]
+        fakeRepository.setFavoriteTV(dummy, true)
 
-        val tvEntities = LiveDataTestUtil.getValue(fakeRepository.getOneTV(tvResponses[0].id, null))
-        verify(local).getOneTV(tvResponses[0].id)
-        assertNotNull(tvEntities)
+        verify(local, times(1)).setFavoriteTV(dummy, true)
     }
+
 }

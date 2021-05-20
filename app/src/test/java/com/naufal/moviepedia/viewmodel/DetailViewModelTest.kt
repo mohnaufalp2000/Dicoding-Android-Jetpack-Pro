@@ -53,8 +53,8 @@ class DetailViewModelTest {
         movies.value = dummyMovie
 
         `when`(movieId?.let { detailRepository.getOneMovie(it,context = null) }).thenReturn(movies)
-
         viewModel.getDetailMovie(null).observeForever(movieObserver)
+
         verify(movieObserver).onChanged(dummyMovie)
     }
 
@@ -64,8 +64,40 @@ class DetailViewModelTest {
         tv.value = dummyTV
 
         `when`(tvId?.let { detailRepository.getOneTV(it,context = null) }).thenReturn(tv)
-
         viewModel.getDetailTV(null).observeForever(tvObserver)
+
         verify(tvObserver).onChanged(dummyTV)
     }
+
+    @Test
+    fun setFavoriteMovies(){
+        val movies = MutableLiveData<Resource<MovieEntity>>()
+        movies.value = dummyMovie
+
+        `when`(movieId?.let { detailRepository.getOneMovie(it,context = null) }).thenReturn(movies)
+        viewModel.getDetailMovie(null).observeForever(movieObserver)
+
+        doNothing().`when`(detailRepository).setFavoriteMovies(DataDummy.getDataMovies()[0], true)
+
+        viewModel.setFavoriteMovies(DataDummy.getDataMovies()[0], true)
+
+        verify(detailRepository).setFavoriteMovies(DataDummy.getDataMovies()[0], true)
+    }
+
+    @Test
+    fun setFavoriteTV(){
+        val tv = MutableLiveData<Resource<TVEntity>>()
+        tv.value = dummyTV
+
+        `when`(movieId?.let { detailRepository.getOneTV(it,context = null) }).thenReturn(tv)
+        viewModel.getDetailTV(null).observeForever(tvObserver)
+
+        doNothing().`when`(detailRepository).setFavoriteTV(DataDummy.getDataTV()[0], true)
+
+        viewModel.setFavoriteTV(DataDummy.getDataTV()[0], true)
+
+        verify(detailRepository).setFavoriteTV(DataDummy.getDataTV()[0], true)
+
+    }
+
 }
