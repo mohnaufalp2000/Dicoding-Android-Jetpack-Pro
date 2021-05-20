@@ -174,7 +174,7 @@ class FakeRepository(
     }
 
 
-    override fun getFavoriteMovies(context: Context?): LiveData<PagedList<MovieEntity?>?> {
+    override fun getFavoriteMovies(context: Context?): LiveData<PagedList<MovieEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setInitialLoadSizeHint(4)
@@ -184,7 +184,7 @@ class FakeRepository(
         return LivePagedListBuilder(localDataSource.getFavoriteMovies(), config).build()
     }
 
-    override fun getFavoriteTV(context: Context?): LiveData<PagedList<TVEntity?>?> {
+    override fun getFavoriteTV(context: Context?): LiveData<PagedList<TVEntity>> {
         val config = PagedList.Config.Builder()
             .setEnablePlaceholders(false)
             .setInitialLoadSizeHint(4)

@@ -31,13 +31,8 @@ class DetailViewModel(private val detailRepository: Repository) : ViewModel() {
         detailRepository.setFavoriteMovies(movieItems, state)
     }
 
-    fun getFavoriteMovies(context: Context?) : LiveData<PagedList<MovieEntity?>?> = detailRepository.getFavoriteMovies(context)
-
     fun setFavoriteTV(tvItems: TVEntity, state: Boolean){
         detailRepository.setFavoriteTV(tvItems, state)
     }
-
-    fun getFavoriteTV(context: Context?) : LiveData<PagedList<TVEntity?>?> = detailRepository.getFavoriteTV(context)
-
 
 }

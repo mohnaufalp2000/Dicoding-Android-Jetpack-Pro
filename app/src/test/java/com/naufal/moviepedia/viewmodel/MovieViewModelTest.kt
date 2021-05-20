@@ -1,7 +1,5 @@
 package com.naufal.moviepedia.viewmodel
 
-import android.app.Application
-import android.app.Instrumentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer

@@ -31,6 +31,9 @@ class ViewModelFactory(private val repository: Repository) : ViewModelProvider.N
             modelClass.isAssignableFrom(DetailViewModel::class.java) -> {
                 return DetailViewModel(repository) as T
             }
+            modelClass.isAssignableFrom(FavoriteViewModel::class.java) -> {
+                return FavoriteViewModel(repository) as T
+            }
             else -> throw Throwable("Uknown" +modelClass.name)
         }
 

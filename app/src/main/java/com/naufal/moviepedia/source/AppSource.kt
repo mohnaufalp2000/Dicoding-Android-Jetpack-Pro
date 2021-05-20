@@ -13,8 +13,8 @@ interface AppSource {
     fun getAllTV(context: Context?) : LiveData<Resource<PagedList<TVEntity>>>
     fun getOneMovie(id: Int?, context: Context?) : LiveData<Resource<MovieEntity>>
     fun getOneTV(id: Int?, context: Context?) : LiveData<Resource<TVEntity>>
-    fun getFavoriteMovies(context: Context?) : LiveData<PagedList<MovieEntity?>?>
-    fun getFavoriteTV(context: Context?) : LiveData<PagedList<TVEntity?>?>
+    fun getFavoriteMovies(context: Context?) : LiveData<PagedList<MovieEntity>>
+    fun getFavoriteTV(context: Context?) : LiveData<PagedList<TVEntity>>
     fun setFavoriteMovies(movieItems: MovieEntity, state: Boolean)
     fun setFavoriteTV(tvItems: TVEntity, state: Boolean)
 }

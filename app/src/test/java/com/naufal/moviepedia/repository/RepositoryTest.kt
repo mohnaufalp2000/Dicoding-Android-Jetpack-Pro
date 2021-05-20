@@ -1,6 +1,5 @@
 package com.naufal.moviepedia.repository
 
-import android.graphics.Movie
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
@@ -14,12 +13,10 @@ import com.naufal.moviepedia.util.LiveDataTestUtil
 import com.naufal.moviepedia.util.PagedListUtil
 import com.naufal.moviepedia.viewmodel.FakeRepository
 import com.naufal.moviepedia.vo.Resource
-//import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 
 import org.junit.Assert.*
 import org.junit.Rule
-import org.mockito.Mockito
 import org.mockito.Mockito.*
 
 class RepositoryTest {
@@ -57,6 +54,28 @@ class RepositoryTest {
         val tvEntities = Resource.success(PagedListUtil.mockPagedList(DataDummy.getDataTV()))
         verify(local).getAllTV()
         assertNotNull(tvEntities.data)
+    }
+
+    @Test
+    fun getFavoriteMovies(){
+        val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, MovieEntity>
+        `when`(local.getFavoriteMovies()).thenReturn(dataSourceFactory)
+        fakeRepository.getFavoriteMovies(null)
+
+        val movieEntities = Resource.success(PagedListUtil.mockPagedList(DataDummy.getDataMovies()))
+        verify(local).getFavoriteMovies()
+        assertNotNull(movieEntities)
+    }
+
+    @Test
+    fun getFavoriteTV(){
+        val dataSourceFactory = mock(DataSource.Factory::class.java) as DataSource.Factory<Int, TVEntity>
+        `when`(local.getFavoriteTV()).thenReturn(dataSourceFactory)
+        fakeRepository.getFavoriteTV(null)
+
+        val tvEntities = Resource.success(PagedListUtil.mockPagedList(DataDummy.getDataTV()))
+        verify(local).getFavoriteTV()
+        assertNotNull(tvEntities)
     }
 
     @Test

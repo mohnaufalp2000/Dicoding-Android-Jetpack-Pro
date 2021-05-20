@@ -19,6 +19,7 @@ object DataDummy {
                     id = 1,
                     title = "Alita: Battle Angel",
                     voteAverage = 7.3,
+                    overview = "Barry Allen, a forensic scientist with the Central City police force, is struck by lightning in a freak accident. When he wakes up after nine months, he discovers that he can achieve great speeds.",
                     originalLanguage = "en"
                 )
             )
@@ -27,6 +28,7 @@ object DataDummy {
                     id = 2,
                     title = "Aquaman",
                     voteAverage = 6.9,
+                    overview = "Barry Allen, a forensic scientist with the Central City police force, is struck by lightning in a freak accident. When he wakes up after nine months, he discovers that he can achieve great speeds.",
                     originalLanguage = "en"
                 )
             )
@@ -35,6 +37,7 @@ object DataDummy {
                     id = 3,
                     title = "Bohemian Rhapsody",
                     voteAverage = 8.0,
+                    overview = "Barry Allen, a forensic scientist with the Central City police force, is struck by lightning in a freak accident. When he wakes up after nine months, he discovers that he can achieve great speeds.",
                     originalLanguage = "en"
                 )
             )
@@ -43,6 +46,7 @@ object DataDummy {
                     id = 4,
                     title = "Creed II",
                     voteAverage = 7.1,
+                    overview = "Barry Allen, a forensic scientist with the Central City police force, is struck by lightning in a freak accident. When he wakes up after nine months, he discovers that he can achieve great speeds.",
                     originalLanguage = "en"
                 )
             )
@@ -51,6 +55,7 @@ object DataDummy {
                     id = 5,
                     title = "Glass",
                     voteAverage = 6.7,
+                    overview = "Barry Allen, a forensic scientist with the Central City police force, is struck by lightning in a freak accident. When he wakes up after nine months, he discovers that he can achieve great speeds.",
                     originalLanguage = "en"
                 )
             )
@@ -59,6 +64,7 @@ object DataDummy {
                     id = 6,
                     title = "How to Train Your Dragon: The Hidden World",
                     voteAverage = 7.5,
+                    overview = "Barry Allen, a forensic scientist with the Central City police force, is struck by lightning in a freak accident. When he wakes up after nine months, he discovers that he can achieve great speeds.",
                     originalLanguage = "en"
                 )
             )
@@ -67,6 +73,7 @@ object DataDummy {
                     id = 7,
                     title = "Avengers: Infinity War",
                     voteAverage = 8.4,
+                    overview = "Barry Allen, a forensic scientist with the Central City police force, is struck by lightning in a freak accident. When he wakes up after nine months, he discovers that he can achieve great speeds.",
                     originalLanguage = "en"
                 )
             )
@@ -75,6 +82,7 @@ object DataDummy {
                     id = 8,
                     title = "Overlord",
                     voteAverage = 6.6,
+                    overview = "Barry Allen, a forensic scientist with the Central City police force, is struck by lightning in a freak accident. When he wakes up after nine months, he discovers that he can achieve great speeds.",
                     originalLanguage = "en"
                 )
             )
@@ -83,6 +91,7 @@ object DataDummy {
                     id = 9,
                     title = "Ralph Breaks the Internet",
                     voteAverage = 7.0,
+                    overview = "Barry Allen, a forensic scientist with the Central City police force, is struck by lightning in a freak accident. When he wakes up after nine months, he discovers that he can achieve great speeds.",
                     originalLanguage = "en"
                 )
             )
@@ -91,6 +100,7 @@ object DataDummy {
                     id = 10,
                     title = "Robin Hood",
                     voteAverage = 5.3,
+                    overview = "Barry Allen, a forensic scientist with the Central City police force, is struck by lightning in a freak accident. When he wakes up after nine months, he discovers that he can achieve great speeds.",
                     originalLanguage = "en"
                 )
             )
@@ -188,13 +198,6 @@ object DataDummy {
         return movies
     }
 
-    fun getDetailDataMovies(id: Int?) : MovieEntity {
-        return MovieEntity(id = id)
-    }
-
-    fun getRemoteDetailDataMovies(id: Int): DetailMovieResp {
-        return DetailMovieResp(id)
-    }
 
     fun getDataTV(): List<TVEntity> {
 
@@ -390,9 +393,6 @@ object DataDummy {
         return tv
     }
 
-    fun getRemoteDetailDataTV(id: Int): DetailTVResp {
-        return DetailTVResp(id)
-    }
 
 }
 

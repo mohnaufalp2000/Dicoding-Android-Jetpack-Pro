@@ -1,27 +1,19 @@
 package com.naufal.moviepedia.viewmodel
 
-import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.naufal.moviepedia.model.DetailMovieResponse
-import com.naufal.moviepedia.model.DetailTVResponse
 import com.naufal.moviepedia.model.MovieEntity
 import com.naufal.moviepedia.model.TVEntity
 import com.naufal.moviepedia.repository.Repository
 import com.naufal.moviepedia.util.DataDummy
 import com.naufal.moviepedia.vo.Resource
-import com.naufal.moviepedia.vo.Status
-import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 
-import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
-import org.junit.runner.manipulation.Ordering
-import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner

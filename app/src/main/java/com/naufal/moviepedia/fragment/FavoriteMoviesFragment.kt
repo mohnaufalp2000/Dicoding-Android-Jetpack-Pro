@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.naufal.moviepedia.adapter.FavoriteMovieAdapter
 import com.naufal.moviepedia.databinding.FragmentFavoriteMoviesBinding
 import com.naufal.moviepedia.viewmodel.DetailViewModel
+import com.naufal.moviepedia.viewmodel.FavoriteViewModel
 import com.naufal.moviepedia.viewmodel.ViewModelFactory
 
 class FavoriteMoviesFragment : Fragment() {
@@ -30,11 +31,11 @@ class FavoriteMoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val factory = ViewModelFactory.getInstance(context)
-        val mDetailMovieViewModel by lazy {
-            ViewModelProvider(this, factory).get(DetailViewModel::class.java)
+        val mFavoriteViewModel by lazy {
+            ViewModelProvider(this, factory).get(FavoriteViewModel::class.java)
         }
 
-        mDetailMovieViewModel.getFavoriteMovies(context).observe(viewLifecycleOwner, {
+        mFavoriteViewModel.getFavoriteMovies(context).observe(viewLifecycleOwner, {
             adapterMovies.setMovies(it)
             adapterMovies.submitList(it)
             showRecyclerView()
