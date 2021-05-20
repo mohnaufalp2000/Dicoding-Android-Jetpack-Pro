@@ -9,7 +9,7 @@ import com.naufal.moviepedia.vo.Resource
 
 abstract class NetworkBoundResource<ResultType, RequestType>(private val mExecutors: AppExecutors) {
 
-    private val result = MediatorLiveData<Resource<ResultType?>>()
+    private val result = MediatorLiveData<Resource<ResultType>>()
 
     init {
         result.value = Resource.loading(null)
@@ -79,6 +79,6 @@ abstract class NetworkBoundResource<ResultType, RequestType>(private val mExecut
 
     }
 
-    fun asLiveData(): LiveData<Resource<ResultType?>> = result
+    fun asLiveData(): LiveData<Resource<ResultType>> = result
 
 }

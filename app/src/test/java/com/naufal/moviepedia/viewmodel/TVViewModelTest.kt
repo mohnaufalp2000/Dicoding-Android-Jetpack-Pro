@@ -3,10 +3,15 @@ package com.naufal.moviepedia.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
+import com.naufal.moviepedia.model.MovieEntity
+import com.naufal.moviepedia.model.TVEntity
 import com.naufal.moviepedia.model.TVItems
 import com.naufal.moviepedia.repository.Repository
 import com.naufal.moviepedia.util.DataDummy
+import com.naufal.moviepedia.vo.Resource
 import com.nhaarman.mockitokotlin2.verify
+import junit.framework.Assert
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -31,7 +36,10 @@ class TVViewModelTest {
     private lateinit var tvRepository: Repository
 
     @Mock
-    private lateinit var observer: Observer<ArrayList<TVItems?>?>
+    private lateinit var observer: Observer<Resource<PagedList<TVEntity>>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<TVEntity>
 
     @Before
     fun setUp(){
@@ -40,17 +48,18 @@ class TVViewModelTest {
 
     @Test
     fun getTV() {
-        val dummyTV = DataDummy.getDataTV()
-        val tv = MutableLiveData<ArrayList<TVItems?>?>()
+        val dummyTV = Resource.success(pagedList)
+        `when`(dummyTV.data?.size).thenReturn(5)
+        val tv = MutableLiveData<Resource<PagedList<TVEntity>>>()
         tv.value = dummyTV
 
-        `when`(tvRepository.getAllTV(null)).thenReturn(tv)
-        val tvEntities = viewModel.getTV(null).value
-        verify(tvRepository).getAllTV(null)
-        assertNotNull(tvEntities)
-        assertEquals(10, tvEntities?.size)
+        `when`(tvRepository.getAllTV(context = null)).thenReturn(tv)
+        val tvEntities = viewModel.getTV(context = null).value?.data
+        Mockito.verify(tvRepository).getAllTV(context = null)
+        Assert.assertNotNull(tvEntities)
+        Assert.assertEquals(5, tvEntities?.size)
 
-        viewModel.getTV(null).observeForever(observer)
+        viewModel.getTV(context = null).observeForever(observer)
         Mockito.verify(observer).onChanged(dummyTV)
     }
 }

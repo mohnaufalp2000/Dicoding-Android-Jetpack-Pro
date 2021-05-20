@@ -42,6 +42,7 @@ class MoviesFragment : Fragment() {
                 when(list.status) {
                     Status.SUCCESS -> {
                         list.data?.let { adapterMovies.setMovies(it) }
+                        adapterMovies.submitList(list.data)
                     }
                     Status.ERROR -> {
                         Toast.makeText(context, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()

@@ -1,12 +1,18 @@
 package com.naufal.moviepedia.viewmodel
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.naufal.moviepedia.model.DetailMovieResponse
 import com.naufal.moviepedia.model.DetailTVResponse
+import com.naufal.moviepedia.model.MovieEntity
+import com.naufal.moviepedia.model.TVEntity
 import com.naufal.moviepedia.repository.Repository
 import com.naufal.moviepedia.util.DataDummy
+import com.naufal.moviepedia.vo.Resource
+import com.naufal.moviepedia.vo.Status
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.Test
 
@@ -14,18 +20,20 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.runner.RunWith
+import org.junit.runner.manipulation.Ordering
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
+import org.mockito.Mockito.*
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
 class DetailViewModelTest {
 
     private lateinit var viewModel: DetailViewModel
-    private val dummyMovie = DataDummy.getDataMovies()[0]
-    private val dummyTV = DataDummy.getDataTV()[0]
-    private val movieId = dummyMovie?.id
-    private val tvId = dummyTV?.id
+    private val dummyMovie : Resource<MovieEntity> = Resource.success(DataDummy.getDataMovies()[0])
+    private val dummyTV : Resource<TVEntity> = Resource.success(DataDummy.getDataTV()[0])
+    private val movieId = dummyMovie.data?.id
+    private val tvId = dummyTV.data?.id
 
     @get:Rule
     var instantTaskExecutorRule = InstantTaskExecutorRule()
@@ -34,10 +42,10 @@ class DetailViewModelTest {
     private lateinit var detailRepository: Repository
 
     @Mock
-    private lateinit var movieObserver: Observer<DetailMovieResponse?>
+    private lateinit var movieObserver: Observer<Resource<MovieEntity>>
 
     @Mock
-    private lateinit var tvObserver: Observer<DetailTVResponse?>
+    private lateinit var tvObserver: Observer<Resource<TVEntity>>
 
 
     @Before
@@ -49,46 +57,23 @@ class DetailViewModelTest {
 
     @Test
     fun getDetailMovie() {
-        val movies = MutableLiveData<DetailMovieResponse>()
+        val movies = MutableLiveData<Resource<MovieEntity>>()
+        movies.value = dummyMovie
 
-        val detailMovie = DetailMovieResponse()
-
-        movies.value = detailMovie
-
-        `when`(movieId?.let { detailRepository.getOneMovie(it, null) }).thenReturn(movies)
-        val movieEntity = viewModel.getDetailMovie(null).value
-        movieId?.let { verify(detailRepository).getOneMovie(it, null) }
-
-        assertNotNull(movieEntity)
-        assertEquals(detailMovie.id, movieEntity?.id)
-        assertEquals(detailMovie.title, movieEntity?.title)
-        assertEquals(detailMovie.voteAverage, movieEntity?.voteAverage)
-        assertEquals(detailMovie.originalLanguage, movieEntity?.originalLanguage)
+        `when`(movieId?.let { detailRepository.getOneMovie(it,context = null) }).thenReturn(movies)
 
         viewModel.getDetailMovie(null).observeForever(movieObserver)
-        verify(movieObserver).onChanged(detailMovie)
-
+        verify(movieObserver).onChanged(dummyMovie)
     }
 
     @Test
-    fun getDetailShow() {
-        val tv = MutableLiveData<DetailTVResponse>()
+    fun getDetailTV() {
+        val tv = MutableLiveData<Resource<TVEntity>>()
+        tv.value = dummyTV
 
-        val detailTV = DetailTVResponse()
+        `when`(tvId?.let { detailRepository.getOneTV(it,context = null) }).thenReturn(tv)
 
-        tv.value = detailTV
-
-        `when`(tvId?.let { detailRepository.getOneTV(it, null) }).thenReturn(tv)
-        val tvEntity = viewModel.getDetailShow(null).value
-        tvId?.let { verify(detailRepository).getOneTV(it, null) }
-
-        assertNotNull(tvEntity)
-        assertEquals(detailTV.id, tvEntity?.id)
-        assertEquals(detailTV.name, tvEntity?.name)
-        assertEquals(detailTV.voteAverage, tvEntity?.voteAverage)
-        assertEquals(detailTV.originalLanguage, tvEntity?.originalLanguage)
-
-        viewModel.getDetailShow(null).observeForever(tvObserver)
-        verify(tvObserver).onChanged(detailTV)
+        viewModel.getDetailTV(null).observeForever(tvObserver)
+        verify(tvObserver).onChanged(dummyTV)
     }
 }

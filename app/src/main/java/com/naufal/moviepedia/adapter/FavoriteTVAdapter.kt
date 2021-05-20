@@ -3,6 +3,8 @@ package com.naufal.moviepedia.adapter
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.naufal.moviepedia.activity.DetailActivity
@@ -11,7 +13,19 @@ import com.naufal.moviepedia.model.TVEntity
 import com.naufal.moviepedia.model.TVItems
 import com.naufal.moviepedia.util.Constant
 
-class FavoriteTVAdapter : RecyclerView.Adapter<FavoriteTVAdapter.ViewHolder>() {
+class FavoriteTVAdapter : PagedListAdapter<TVEntity, FavoriteTVAdapter.ViewHolder>(DIFF_CALLBACK) {
+
+    companion object{
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TVEntity>(){
+            override fun areItemsTheSame(oldItem: TVEntity, newItem: TVEntity): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: TVEntity, newItem: TVEntity): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 
     private var list = ArrayList<TVEntity?>()
 

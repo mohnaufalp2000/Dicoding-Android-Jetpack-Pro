@@ -42,6 +42,7 @@ class TVShowsFragment : Fragment() {
                 when(list.status){
                     Status.SUCCESS -> {
                         list.data?.let { adapterTV.setTV(it) }
+                        adapterTV.submitList(list.data)
                     }
                     Status.ERROR -> {
                         Toast.makeText(context, "Terjadi kesalahan", Toast.LENGTH_SHORT).show()

@@ -36,6 +36,7 @@ class FavoriteMoviesFragment : Fragment() {
 
         mDetailMovieViewModel.getFavoriteMovies(context).observe(viewLifecycleOwner, {
             adapterMovies.setMovies(it)
+            adapterMovies.submitList(it)
             showRecyclerView()
         })
     }

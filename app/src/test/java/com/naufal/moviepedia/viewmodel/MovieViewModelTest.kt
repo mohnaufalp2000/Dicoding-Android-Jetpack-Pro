@@ -5,9 +5,12 @@ import android.app.Instrumentation
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
+import com.naufal.moviepedia.model.MovieEntity
 import com.naufal.moviepedia.model.MovieItems
 import com.naufal.moviepedia.repository.Repository
 import com.naufal.moviepedia.util.DataDummy
+import com.naufal.moviepedia.vo.Resource
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertNotNull
 import org.junit.Test
@@ -32,7 +35,10 @@ class MovieViewModelTest {
     private lateinit var movieRepository: Repository
 
     @Mock
-    private lateinit var observer: Observer<List<MovieItems?>?>
+    private lateinit var observer: Observer<Resource<PagedList<MovieEntity>>>
+
+    @Mock
+    private lateinit var pagedList: PagedList<MovieEntity>
 
     @Before
     fun setUp(){
@@ -41,15 +47,16 @@ class MovieViewModelTest {
 
     @Test
     fun getMovies() {
-        val dummyMovies = DataDummy.getDataMovies()
-        val movies = MutableLiveData<List<MovieItems?>?>()
+        val dummyMovies = Resource.success(pagedList)
+        `when`(dummyMovies.data?.size).thenReturn(5)
+        val movies = MutableLiveData<Resource<PagedList<MovieEntity>>>()
         movies.value = dummyMovies
 
         `when`(movieRepository.getAllMovies(context = null)).thenReturn(movies)
-        val movieEntities = viewModel.getMovies(context = null).value
+        val movieEntities = viewModel.getMovies(context = null).value?.data
         verify(movieRepository).getAllMovies(context = null)
         assertNotNull(movieEntities)
-        assertEquals(10, movieEntities?.size)
+        assertEquals(5, movieEntities?.size)
 
         viewModel.getMovies(context = null).observeForever(observer)
         verify(observer).onChanged(dummyMovies)

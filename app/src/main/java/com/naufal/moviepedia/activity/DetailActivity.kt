@@ -1,5 +1,6 @@
 package com.naufal.moviepedia.activity
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -7,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.naufal.moviepedia.R
 import com.naufal.moviepedia.databinding.ActivityDetailBinding
 import com.naufal.moviepedia.model.*
@@ -88,8 +90,10 @@ class DetailActivity : AppCompatActivity() {
         binding.btnFavorite.setOnClickListener {
             stateMovie = !stateMovie!!
             if (stateMovie as Boolean){
+                showSnackBar(true)
                 binding.btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
             } else {
+                showSnackBar(false)
                 binding.btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
             detail?.let { favorite -> mDetailViewModel.setFavoriteMovies(favorite, stateMovie!!) }
@@ -100,11 +104,31 @@ class DetailActivity : AppCompatActivity() {
         binding.btnFavorite.setOnClickListener {
             stateTV = !stateTV!!
             if (stateTV as Boolean){
+                showSnackBar(true)
                 binding.btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_24)
             } else {
+                showSnackBar(false)
                 binding.btnFavorite.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
             data?.let { favorite -> mDetailViewModel.setFavoriteTV(favorite, stateTV!!) }
+        }
+    }
+
+    private fun showSnackBar(state: Boolean) {
+        if (state){
+            val mySnackbar = Snackbar.make(
+                binding.detailActivity,
+                "Successful add favorite",
+                Snackbar.LENGTH_LONG)
+            mySnackbar.view.setBackgroundColor(Color.RED)
+            mySnackbar.show()
+        } else {
+            val mySnackbar = Snackbar.make(
+                binding.detailActivity,
+                "Successful delete favorite",
+                Snackbar.LENGTH_LONG)
+            mySnackbar.view.setBackgroundColor(Color.RED)
+            mySnackbar.show()
         }
     }
 

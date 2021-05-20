@@ -181,21 +181,4 @@ class RemoteDataSource {
         return result
     }
 
-    interface LoadMoviesCallback{
-        fun onMoviesReceived(movieResp : List<MovieResp>)
-    }
-
-    interface LoadTVCallback{
-        fun onTVReceived(tvResp: ArrayList<TVResp>)
-    }
-
-    interface LoadDetailMovieCallback {
-        fun onDetailMovieReceived(detailMovieResp : DetailMovieResp)
-    }
-
-    interface LoadDetailTVCallback {
-        fun onDetailTVReceived(detailTvResp: DetailTVResp)
-    }
-
-
 }

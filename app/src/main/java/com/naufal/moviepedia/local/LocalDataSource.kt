@@ -1,6 +1,7 @@
 package com.naufal.moviepedia.local
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
 import com.naufal.moviepedia.database.MovieDao
 import com.naufal.moviepedia.database.TVDao
 import com.naufal.moviepedia.model.MovieEntity
@@ -15,12 +16,12 @@ class LocalDataSource(private val mMovieDao: MovieDao, private val mTVDao: TVDao
             INSTANCE ?: LocalDataSource(movieDao, tvDao)
     }
 
-    fun getAllMovies(): LiveData<List<MovieEntity>> = mMovieDao.getMovies()
+    fun getAllMovies(): DataSource.Factory<Int, MovieEntity> = mMovieDao.getMovies()
 
     fun getOneMovies(id: Int?) : LiveData<MovieEntity> =
         mMovieDao.getOneMovies(id)
 
-    fun getFavoriteMovies(): LiveData<List<MovieEntity?>?> = mMovieDao.getFavoriteMovies()
+    fun getFavoriteMovies(): DataSource.Factory<Int, MovieEntity> = mMovieDao.getFavoriteMovies()
 
     fun addMovies(movieItems: List<MovieEntity>) = mMovieDao.addMovies(movieItems)
     
@@ -33,12 +34,12 @@ class LocalDataSource(private val mMovieDao: MovieDao, private val mTVDao: TVDao
         mMovieDao.updateMovies(movieItems)
     }
 
-    fun getAllTV(): LiveData<List<TVEntity>> = mTVDao.getTV()
+    fun getAllTV(): DataSource.Factory<Int, TVEntity> = mTVDao.getTV()
 
     fun getOneTV(id: Int?) : LiveData<TVEntity> =
         mTVDao.getOneTV(id)
 
-    fun getFavoriteTV(): LiveData<List<TVEntity?>?> = mTVDao.getFavoriteTV()
+    fun getFavoriteTV(): DataSource.Factory<Int, TVEntity> = mTVDao.getFavoriteTV()
 
     fun addTV(tvItems: List<TVEntity>) = mTVDao.addTV(tvItems)
 

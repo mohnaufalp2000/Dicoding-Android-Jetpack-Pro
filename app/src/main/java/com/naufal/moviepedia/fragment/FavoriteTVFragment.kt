@@ -36,6 +36,7 @@ class FavoriteTVFragment : Fragment() {
 
         mDetailMovieViewModel.getFavoriteTV(context).observe(viewLifecycleOwner, {
             adapterTV.setTV(it)
+            adapterTV.submitList(it)
             showRecyclerView()
         })
 
