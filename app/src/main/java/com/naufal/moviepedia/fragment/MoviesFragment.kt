@@ -41,7 +41,6 @@ class MoviesFragment : Fragment() {
             if(list != null){
                 when(list.status) {
                     Status.SUCCESS -> {
-                        list.data?.let { adapterMovies.setMovies(it) }
                         adapterMovies.submitList(list.data)
                     }
                     Status.ERROR -> {

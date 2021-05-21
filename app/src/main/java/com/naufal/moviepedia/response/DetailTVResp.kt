@@ -1,10 +1,5 @@
 package com.naufal.moviepedia.response
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
-
-@Parcelize
 data class DetailTVResp (
     val id: Int? = 0,
     val title: String? = "",
@@ -13,12 +8,6 @@ data class DetailTVResp (
     val language: String? = "",
     val overview: String? = "",
     val released: String? = null,
-    val runtime: @RawValue ArrayList<Int?>? = arrayListOf(),
-    val genres: @RawValue ArrayList<TVGenreResp>? = arrayListOf()
-) : Parcelable
+    val runtime: Int? = 0
+)
 
-@Parcelize
-data class TVGenreResp(
-    val id: Int? = 0,
-    val name: String? = ""
-) : Parcelable

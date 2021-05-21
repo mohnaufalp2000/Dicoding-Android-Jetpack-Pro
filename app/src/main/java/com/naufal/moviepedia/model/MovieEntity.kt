@@ -35,5 +35,5 @@ data class MovieEntity(
     var runtime: Int? = null,
 
     @ColumnInfo(name = "isFavorite")
-    var isFavorite: Boolean? = false
+    var isFavorite: Boolean? = false,
 )

@@ -177,21 +177,6 @@
                     android:src="@drawable/ic_baseline_circle_24"
                     android:layout_marginEnd="6dp"/>
 
-                <TextView
-                    android:id="@+id/txt_genre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="6dp"
-                    android:fontFamily="@font/poppins_light"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"/>
-
-                <ImageView
-                    android:contentDescription="@string/circle_divider_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_baseline_circle_24"
-                    android:layout_marginEnd="6dp"/>
 
                 <TextView
                     android:id="@+id/txt_runtime"
@@ -205,6 +190,7 @@
                 <TextView
                     android:id="@+id/txt_runtime_hours"
                     android:text="@string/runtime"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/poppins_light"

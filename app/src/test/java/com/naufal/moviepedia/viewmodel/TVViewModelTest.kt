@@ -56,8 +56,8 @@ class TVViewModelTest {
         `when`(tvRepository.getAllTV(context = null)).thenReturn(tv)
         val tvEntities = viewModel.getTV(context = null).value?.data
         Mockito.verify(tvRepository).getAllTV(context = null)
-        Assert.assertNotNull(tvEntities)
-        Assert.assertEquals(5, tvEntities?.size)
+        assertNotNull(tvEntities)
+        assertEquals(5, tvEntities?.size)
 
         viewModel.getTV(context = null).observeForever(observer)
         Mockito.verify(observer).onChanged(dummyTV)

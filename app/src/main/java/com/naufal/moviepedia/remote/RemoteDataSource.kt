@@ -101,18 +101,6 @@ class RemoteDataSource {
                 response: Response<DetailMovieResponse>
             ) {
                 val body = response.body()
-//                val genreItems = response.body()?.genres
-                val genreResults = ArrayList<MovieGenreResp>()
-
-//                if (genreItems != null) {
-//                    for (item in genreItems){
-//                        val genreResponse = MovieGenreResp(
-//                            id = item?.id,
-//                            name = item?.name
-//                        )
-//                        genreResults.add(genreResponse)
-//                    }
-//                }
 
                 val detailMovie = DetailMovieResp(
                     id = body?.id,
@@ -122,10 +110,8 @@ class RemoteDataSource {
                     language = body?.originalLanguage,
                     overview = body?.overview,
                     runtime = body?.runtime,
-                    release = body?.releaseDate,
-//                    genres = genreResults
+                    release = body?.releaseDate
                 )
-
                 result.value = ApiResponse.success(detailMovie)
             }
 
@@ -146,29 +132,23 @@ class RemoteDataSource {
                 response: Response<DetailTVResponse>
             ) {
                 val body = response.body()
-//                val genreItems = response.body()?.genres
-                val genreResults = ArrayList<TVGenreResp>()
+                var runtime = 0
 
-//                if (genreItems != null) {
-//                    for (item in genreItems){
-//                        val genreResponse = TVGenreResp(
-//                            id = item?.id,
-//                            name = item?.name
-//                        )
-//                        genreResults.add(genreResponse)
-//                    }
-//                }
+                for(i in body?.episodeRunTime!!){
+                    if (i != null) {
+                        runtime = i
+                    }
+                }
 
                 val detailTV = DetailTVResp(
-                    id = body?.id,
-                    title = body?.name,
-                    posterPath = body?.posterPath,
-                    rate = body?.voteAverage,
-                    language = body?.originalLanguage,
-                    overview = body?.overview,
-                    runtime = body?.episodeRunTime,
-                    released = body?.firstAirDate
-//                    genres = genreResults
+                    id = body.id,
+                    title = body.name,
+                    posterPath = body.posterPath,
+                    rate = body.voteAverage,
+                    language = body.originalLanguage,
+                    overview = body.overview,
+                    runtime = runtime,
+                    released = body.firstAirDate
                 )
              result.value = ApiResponse.success(detailTV)
             }

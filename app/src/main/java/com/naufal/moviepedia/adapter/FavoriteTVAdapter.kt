@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.naufal.moviepedia.activity.DetailActivity
 import com.naufal.moviepedia.databinding.ListMainBinding
 import com.naufal.moviepedia.model.TVEntity
-import com.naufal.moviepedia.model.TVItems
 import com.naufal.moviepedia.util.Constant
 
 class FavoriteTVAdapter : PagedListAdapter<TVEntity, FavoriteTVAdapter.ViewHolder>(DIFF_CALLBACK) {

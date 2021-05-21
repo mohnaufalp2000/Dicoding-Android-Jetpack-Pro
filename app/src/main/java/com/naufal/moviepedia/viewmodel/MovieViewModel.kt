@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.naufal.moviepedia.model.MovieEntity
-import com.naufal.moviepedia.model.MovieItems
 import com.naufal.moviepedia.repository.Repository
 import com.naufal.moviepedia.vo.Resource
 

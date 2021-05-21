@@ -3,9 +3,7 @@ package com.naufal.moviepedia.database
 import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
-import com.naufal.moviepedia.model.DetailMovieResponse
 import com.naufal.moviepedia.model.MovieEntity
-import com.naufal.moviepedia.model.MovieItems
 
 @Dao
 interface MovieDao {

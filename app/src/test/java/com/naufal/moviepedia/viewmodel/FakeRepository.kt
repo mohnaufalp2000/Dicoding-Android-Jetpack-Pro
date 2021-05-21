@@ -123,7 +123,7 @@ class FakeRepository(
                     originalLanguage = data.language,
                     overview = data.overview,
                     runtime = data.runtime,
-                    releaseDate = data.release
+                    releaseDate = data.release,
                 )
                 localDataSource.updateMovies(detailMovie)
             }
@@ -146,16 +146,6 @@ class FakeRepository(
                 remoteDataSource.getDetailTV(id, context)
 
             override fun saveCallResult(data: DetailTVResp) {
-//                val genresItem = ArrayList<GenresTVItem?>()
-//
-//                for (response in detailTvResp.genres!!){
-//                    val genre = GenresTVItem(
-//                        id = response.id,
-//                        name = response.name
-//                    )
-//                    genresItem.add(genre)
-//                }
-
                 val detailTV = TVEntity(
                     id = data.id,
                     name = data.title,
@@ -164,15 +154,13 @@ class FakeRepository(
                     originalLanguage = data.language,
                     overview = data.overview,
                     firstAirDate = data.released,
-//                    episodeRunTime = data.runtime,
-//                    genres = genresItem
+                    episodeRunTime = data.runtime
                 )
                 localDataSource.updateTV(detailTV)
             }
         }.asLiveData()
 
     }
-
 
     override fun getFavoriteMovies(context: Context?): LiveData<PagedList<MovieEntity>> {
         val config = PagedList.Config.Builder()
@@ -201,6 +189,5 @@ class FakeRepository(
     override fun setFavoriteTV(tvItems: TVEntity, state: Boolean) {
         appExecutors.diskIO().execute{localDataSource.setFavoriteTV(tvItems, state)}
     }
-
 
 }

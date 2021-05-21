@@ -150,7 +150,6 @@ class DetailActivity : AppCompatActivity() {
             txtLanguage.text = movies?.originalLanguage
             txtRuntime.text = movies?.runtime.toString()
             txtReleased.text = movies?.releaseDate?.subSequence(0,4)
-//            txtGenre.text = movies?.genres?.component1()?.component1()
             txtRuntimeHours.visibility = View.VISIBLE
 
             checkFavState(stateMovie)
@@ -169,14 +168,12 @@ class DetailActivity : AppCompatActivity() {
             txtRating.text = tv?.voteAverage.toString()
             txtOverview.text = tv?.overview
             txtLanguage.text = tv?.originalLanguage
-//            txtGenre.text = tv?.genres?.component1()?.component1()
-//            if (tv?.episodeRunTime?.size != 0){
-//                if (tv != null) {
-//                    txtRuntime.text = tv.episodeRunTime?.get(0).toString()
-//                }
-//            } else {
-//                txtRuntime.text = 0.toString()
-//            }
+
+            if (tv?.episodeRunTime != null){
+                binding.txtRuntimeHours.visibility = View.VISIBLE
+                txtRuntime.text = tv.episodeRunTime.toString()
+            }
+
             txtReleased.text = tv?.firstAirDate?.subSequence(0,4)
 
             checkFavState(stateTV)

@@ -16,8 +16,8 @@ data class TVEntity(
     @ColumnInfo(name = "original_language")
     var originalLanguage: String? = null,
 
-//    @field:SerializedName("genre_ids")
-//    var genreIds: List<Int?>? = null,
+    @ColumnInfo(name = "episodeRunTime")
+    var episodeRunTime: Int? = null,
 
     @ColumnInfo(name ="poster_path")
     var posterPath: String? = null,
@@ -34,5 +34,4 @@ data class TVEntity(
 
     @ColumnInfo(name = "isFavorite")
     var isFavorite: Boolean? = false
-
 )

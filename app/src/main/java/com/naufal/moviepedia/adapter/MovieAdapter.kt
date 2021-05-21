@@ -10,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.naufal.moviepedia.activity.DetailActivity
 import com.naufal.moviepedia.databinding.ListMainBinding
 import com.naufal.moviepedia.model.MovieEntity
-import com.naufal.moviepedia.model.MovieItems
 import com.naufal.moviepedia.util.Constant.Companion.IMG_URL
 
 class MovieAdapter : PagedListAdapter<MovieEntity, MovieAdapter.ViewHolder>(DIFF_CALLBACK) {
@@ -28,13 +27,13 @@ class MovieAdapter : PagedListAdapter<MovieEntity, MovieAdapter.ViewHolder>(DIFF
         }
     }
 
-    private var list = ArrayList<MovieEntity?>()
-
-    fun setMovies(list: List<MovieEntity?>){
-        this.list.clear()
-        this.list.addAll(list)
-        notifyDataSetChanged()
-    }
+//    private var list = ArrayList<MovieEntity?>()
+//
+//    fun setMovies(list: List<MovieEntity?>){
+//        this.list.clear()
+//        this.list.addAll(list)
+//        notifyDataSetChanged()
+//    }
 
     class ViewHolder(private val binding : ListMainBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(movie : MovieEntity){
@@ -64,8 +63,11 @@ class MovieAdapter : PagedListAdapter<MovieEntity, MovieAdapter.ViewHolder>(DIFF
     )
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        this.list[position]?.let { holder.bind(it) }
+        val movie = getItem(position)
+        if (movie!=null){
+            holder.bind(movie)
+        }
+//        this.list[position]?.let { holder.bind(it) }
     }
 
-    override fun getItemCount(): Int = this.list.size
 }

@@ -2,7 +2,6 @@ package com.naufal.moviepedia.repository
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.naufal.moviepedia.local.LocalDataSource
@@ -139,7 +138,7 @@ class Repository(
                     originalLanguage = data.language,
                     overview = data.overview,
                     runtime = data.runtime,
-                    releaseDate = data.release
+                    releaseDate = data.release,
                 )
                 localDataSource.updateMovies(detailMovie)
             }
@@ -162,16 +161,6 @@ class Repository(
                 remoteDataSource.getDetailTV(id, context)
 
             override fun saveCallResult(data: DetailTVResp) {
-//                val genresItem = ArrayList<GenresTVItem?>()
-//
-//                for (response in detailTvResp.genres!!){
-//                    val genre = GenresTVItem(
-//                        id = response.id,
-//                        name = response.name
-//                    )
-//                    genresItem.add(genre)
-//                }
-
                 val detailTV = TVEntity(
                     id = data.id,
                     name = data.title,
@@ -180,15 +169,13 @@ class Repository(
                     originalLanguage = data.language,
                     overview = data.overview,
                     firstAirDate = data.released,
-//                    episodeRunTime = data.runtime,
-//                    genres = genresItem
+                    episodeRunTime = data.runtime
                 )
                 localDataSource.updateTV(detailTV)
             }
         }.asLiveData()
 
     }
-
 
     override fun getFavoriteMovies(context: Context?): LiveData<PagedList<MovieEntity>> {
         val config = PagedList.Config.Builder()

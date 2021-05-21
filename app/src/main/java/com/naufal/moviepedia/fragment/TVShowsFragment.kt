@@ -41,7 +41,6 @@ class TVShowsFragment : Fragment() {
             if (list!=null){
                 when(list.status){
                     Status.SUCCESS -> {
-                        list.data?.let { adapterTV.setTV(it) }
                         adapterTV.submitList(list.data)
                     }
                     Status.ERROR -> {
@@ -55,7 +54,6 @@ class TVShowsFragment : Fragment() {
 
     private fun showRecyclerView() {
         binding?.rvTvShows?.apply {
-            setHasFixedSize(true)
             layoutManager = LinearLayoutManager(context)
             adapter = adapterTV
         }

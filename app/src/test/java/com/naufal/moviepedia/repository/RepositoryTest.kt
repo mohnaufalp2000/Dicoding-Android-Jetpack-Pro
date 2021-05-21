@@ -37,9 +37,10 @@ class RepositoryTest {
         `when`(local.getAllMovies()).thenReturn(dataSourceFactory)
         fakeRepository.getAllMovies(null)
 
-        val movieEntities = Resource.success(PagedListUtil.mockPagedList(DataDummy.getDataMovies()))
+        val movieEntities = Resource.success(PagedListUtil.mockPagedList(movieResponses))
         verify(local).getAllMovies()
         assertNotNull(movieEntities.data)
+        assertEquals(movieResponses.size.toLong(), movieEntities.data?.size?.toLong())
     }
 
     @Test
@@ -48,9 +49,10 @@ class RepositoryTest {
         `when`(local.getAllTV()).thenReturn(dataSourceFactory)
         fakeRepository.getAllTV(null)
 
-        val tvEntities = Resource.success(PagedListUtil.mockPagedList(DataDummy.getDataTV()))
+        val tvEntities = Resource.success(PagedListUtil.mockPagedList(tvResponses))
         verify(local).getAllTV()
         assertNotNull(tvEntities.data)
+        assertEquals(tvResponses.size.toLong(), tvEntities.data?.size?.toLong())
     }
 
     @Test
@@ -62,6 +64,8 @@ class RepositoryTest {
         val movieEntities = LiveDataTestUtil.getValue(fakeRepository.getOneMovie(movieResponses[0].id, null))
         verify(local).getOneMovies(movieResponses[0].id)
         assertNotNull(movieEntities)
+        assertNotNull(movieEntities.data?.title)
+        assertEquals(movieResponses[0].title, movieEntities.data?.title)
     }
 
     @Test
@@ -73,6 +77,8 @@ class RepositoryTest {
         val tvEntities = LiveDataTestUtil.getValue(fakeRepository.getOneTV(tvResponses[0].id, null))
         verify(local).getOneTV(tvResponses[0].id)
         assertNotNull(tvEntities)
+        assertNotNull(tvEntities.data?.name)
+        assertEquals(tvResponses[0].name, tvEntities.data?.name)
     }
 
     @Test
@@ -81,7 +87,7 @@ class RepositoryTest {
         `when`(local.getFavoriteMovies()).thenReturn(dataSourceFactory)
         fakeRepository.getFavoriteMovies(null)
 
-        val movieEntities = Resource.success(PagedListUtil.mockPagedList(DataDummy.getDataMovies()))
+        val movieEntities = Resource.success(PagedListUtil.mockPagedList(movieResponses))
         verify(local).getFavoriteMovies()
         assertNotNull(movieEntities)
     }
@@ -92,7 +98,7 @@ class RepositoryTest {
         `when`(local.getFavoriteTV()).thenReturn(dataSourceFactory)
         fakeRepository.getFavoriteTV(null)
 
-        val tvEntities = Resource.success(PagedListUtil.mockPagedList(DataDummy.getDataTV()))
+        val tvEntities = Resource.success(PagedListUtil.mockPagedList(tvResponses))
         verify(local).getFavoriteTV()
         assertNotNull(tvEntities)
     }

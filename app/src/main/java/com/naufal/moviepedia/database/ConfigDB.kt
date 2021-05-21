@@ -5,7 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.naufal.moviepedia.model.MovieEntity
-import com.naufal.moviepedia.model.MovieItems
 import com.naufal.moviepedia.model.TVEntity
 
 @Database(entities = [MovieEntity::class, TVEntity::class], version = 4, exportSchema = false)

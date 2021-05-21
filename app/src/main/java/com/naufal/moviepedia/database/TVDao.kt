@@ -2,7 +2,6 @@ package com.naufal.moviepedia.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.naufal.moviepedia.model.MovieEntity
 import com.naufal.moviepedia.model.TVEntity
 import androidx.paging.DataSource
 
