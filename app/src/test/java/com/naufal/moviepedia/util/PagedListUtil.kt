@@ -1,10 +1,9 @@
 package com.naufal.moviepedia.util
 
 import androidx.paging.PagedList
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
+import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.Mockito.`when`
-import org.mockito.Mockito.anyInt
+import org.mockito.Mockito.mock
 
 object PagedListUtil {
 
