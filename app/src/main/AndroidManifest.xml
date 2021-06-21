@@ -11,16 +11,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moviepedia">
-        <activity android:name=".activity.FavoriteActivity"></activity>
-        <activity android:name=".activity.DetailActivity" />
-        <activity android:name=".activity.SplashActivity">
+        <activity android:name=".activity.FavoriteActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.DetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activity.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity" />
+        <activity android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"/>
 
         <meta-data
             android:name="preloaded_fonts"
